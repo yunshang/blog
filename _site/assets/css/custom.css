@@ -121,16 +121,20 @@ h2,h3,h4,h5,h6 {
   display: -webkit-box; 
   display: flex; 
   align-content: center;
-  padding-top: 10px;
 }
-
 .list_one {
-  width: 10%;
+  -moz-box-flex: 1; 
+  -webkit-box-flex: 1; 
+  width: 140px;
 }
 .list_two {
-  width: 40%;
+  -moz-box-flex: 1; 
+  -webkit-box-flex: 1; 
+  box-flex: 1;
   padding-right: 30px;
 }
 .list_third {
-  width: 50%;
+  -moz-box-flex: 1; 
+  -webkit-box-flex: 1; 
+  box-flex: 1;
 }
