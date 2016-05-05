@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% include head.html %}
+    <body>
+        {% include header.html %}
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>{{ page.title }}</h1>
+                    <h2 class="headline">{{ page.date | date_to_string }}</h2>
+                </header>
+                <section id="post-body">
+                    {{ content }}
+                </section>
+            </article>
+            <footer id="footer">
+                <div id="social">
+                    <a class="symbol" href="https://github.com/yundshang">
+                      <i class="fa fa-github"></i>
+                    </a>
+                    <a class="symbol" href="https://twitter.com">
+                      <i class="fa fa-twitter"></i>
+                    </a>
+                    <a class="symbol" href="http://weibo.com">
+                      <i class="fa fa-weibo"></i>
+                    </a>
+                </div>
+                <p class="small">
+                    © 版权所有 alshin
+                </p>
+            </footer>
+        </section>
+
+    </body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% include head.html %}
+    <body>
+        {% include header.html %}
+
+    <div class="profile">
+        <section id="wrapper">
+            <header id="header">
+                <a href="{{ "/about.html" | prepend: site.baseurl }}">
+                    <img id="avatar" class="2x" src="{{ "/assets/images/profile.jpg" | prepend: site.baseurl }}">
+                </a>
+                <h1>alshin</h1>
+                <h2>Designer + Engineer = Designeer</h2>
+            </header>
+        </section>
+
+        <section id="wrapper" class="home">
+            <ul id="post-list">
+                {{ content }}        
+            </ul>
+            <footer id="footer">
+                <div id="social">
+                    <a class="symbol" href="https://github.com/yunshang">
+                        <i class="fa fa-github"></i>
+                    </a>
+                    <a class="symbol" href="https://twitter.com">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                    <a class="symbol" href="http://weibo.com">
+                        <i class="fa fa-weibo"></i>
+                    </a>
+                </div>
+                <p class="small">
+                    © 版权所有 alshin
+                </p>
+            </footer>
+
+        </section>
+    </div>
+    </body>
+</html>
