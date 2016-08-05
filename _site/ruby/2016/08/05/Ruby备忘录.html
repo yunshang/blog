@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>alshin - Ruby备忘录</title>
+    <meta name="description" content="">
+
+    <link rel="stylesheet" href="/blog/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="/blog/assets/css/animate.css">
+    <link rel="stylesheet" href="/blog/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/blog/assets/css/font.css">
+    <link rel="stylesheet" href="/blog/assets/css/landing.css">
+    <link rel="stylesheet" href="/blog/assets/css/app.css">
+    <link rel="stylesheet" href="/blog/assets/css/highlight.css">
+    <link rel="stylesheet" href="/blog/assets/css/custom.css">
+
+    <link rel="canonical" href="/blog/ruby/2016/08/05/Ruby%E5%A4%87%E5%BF%98%E5%BD%95.html">
+    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1259096643'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1259096643%26show%3Dpic2' type='text/javascript'%3E%3C/script%3E"));</script>
+</head>
+
+    <body>
+        <header id="header" class="navbar navbar-fixed-top bg-white box-shadow b-b b-light"  data-spy="affix" data-offset-top="1">
+  <div class="container">
+    <div class="navbar-header">
+        <a href="/blog/index.html" class="navbar-brand">
+          <span class="text-muted">alshin</span>
+        </a>
+      <button class="btn btn-link visible-xs" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+        <i class="fa fa-bars"></i>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/blog/index.html">HOME</a></li>
+        <li><a href="###">Category</a></li>
+        <li><a href="/blog/about.html">About me</a></li>
+        <li><a href="/blog/timeline.html">Timeline</a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>Ruby备忘录</h1>
+                    <h2 class="headline">05 Aug 2016</h2>
+                </header>
+                <section id="post-body">
+                    <h2 id="attraccessorcattraccessor">attr_accessor与cattr_accessor</h2>
+
+<blockquote>
+  <p>attr_accessor 和帮你在 Ruby 的类別里产生一对getter以及setter方法。</p>
+</blockquote>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Person</span>
+  <span class="k">def</span> <span class="nf">name</span>
+    <span class="vi">@name</span> <span class="c1"># simply returning an instance variable @name</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">name</span> <span class="c1"># =&gt; nil</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s2">"Dennis"</span> <span class="c1"># =&gt; no method error</span>
+</code></pre>
+</div>
+
+<h3 id="personname-personnamepersonnamedennispersonname">person.name 其实执行的是person.name()这个方法，person.name=”Dennis”是执行的是person.name=()这个方法。</h3>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Person</span>
+  <span class="kp">attr_accessor</span> <span class="ss">:name</span>
+<span class="k">end</span>
+
+<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s2">"Dennis"</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">name</span> <span class="c1"># =&gt; "Dennis"</span>
+</code></pre>
+</div>
+
+<h3 id="attraccessor-personpersonnamepersonname">attr_accessor 给person加上了person.name这个读方法，和person.name=()这个写方法。</h3>
+
+<blockquote>
+  <p>cattr_accessor 类的共享实例</p>
+</blockquote>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Counter</span>  
+  <span class="n">cattr_accessor</span> <span class="ss">:class_count</span>  
+  <span class="kp">attr_accessor</span> <span class="ss">:instance_count</span>  
+<span class="k">end</span>  
+   
+<span class="n">counter1</span> <span class="o">=</span> <span class="no">Counter</span><span class="p">.</span><span class="nf">new</span>  
+<span class="n">counter1</span><span class="p">.</span><span class="nf">instance_count</span> <span class="o">=</span> <span class="mi">1</span>  
+<span class="n">counter1</span><span class="p">.</span><span class="nf">class_count</span> <span class="o">=</span> <span class="mi">1</span>  
+   
+<span class="n">counter2</span> <span class="o">=</span> <span class="no">Counter</span><span class="p">.</span><span class="nf">new</span>  
+<span class="nb">p</span> <span class="n">counter2</span><span class="p">.</span><span class="nf">instance_count</span>  
+<span class="c1">#&gt; nil  </span>
+<span class="nb">p</span> <span class="n">counter2</span><span class="p">.</span><span class="nf">class_count</span>  
+<span class="c1">#&gt; 1  </span>
+</code></pre>
+</div>
+
+<h2 id="section">实例变量</h2>
+
+<blockquote>
+  <p>ruby的实例变量以@开头，是指实例化后的对象，才绑定的变量。实例变量属于特定的对象。</p>
+</blockquote>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Myclass</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">age</span><span class="p">)</span>
+    <span class="vi">@name</span><span class="o">=</span><span class="nb">name</span>
+    <span class="vi">@gender</span><span class="o">=</span><span class="n">gender</span>
+    <span class="vi">@age</span><span class="o">=</span><span class="n">age</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+
+<h3 id="name-genderagenil">@name， @gender，@age都是实例变量。可以在类或子类的方法中引用实例变量。若引用尚未被初始化的实例变量的话，其值为nil。只有在类被实例化时，实例变量才产生和存在。但是，实例对象并不能直接访问实例变量。</h3>
+
+<h2 id="section-1">类变量</h2>
+
+<blockquote>
+  <p>类变量在类的定义中定义，可以在类的特殊方法、实例方法等处对类变量进行赋值和引用。类变量被类，类的子类和他们的实例对象共享。</p>
+</blockquote>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Person</span>
+  <span class="vc">@@number</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1">#使用前必须有初值</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">gender</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span>
+    <span class="vi">@age</span> <span class="o">=</span> <span class="n">age</span>
+    <span class="vc">@@number</span> <span class="o">+=</span> <span class="mi">1</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+
+<h3 id="section-2">类变量是私有的，在类外无法直接访问，你只能通过实例方法和类方法去访问它。可以把类变量看作一种被类、子类以及它们的实例所共享的全局变量。模块中定义的类变量(模块变量)被所有包含该模块的类所共享。</h3>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>  <span class="k">class</span> <span class="nc">Parent</span>
+  <span class="k">end</span>
+
+  <span class="k">class</span> <span class="nc">Child</span> <span class="o">&lt;</span> <span class="no">Parent</span>
+    <span class="vc">@@var</span> <span class="o">=</span> <span class="s1">'var in Child'</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">var</span>
+     <span class="vc">@@var</span> 
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">class</span> <span class="nc">AnotherChild</span> <span class="o">&lt;</span> <span class="no">Parent</span>
+    <span class="vc">@@var</span> <span class="o">=</span> <span class="s1">'var in AnotherChild'</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">var</span>
+     <span class="vc">@@var</span> 
+    <span class="k">end</span>
+  <span class="k">end</span>
+  
+  <span class="nb">puts</span> <span class="no">Child</span><span class="p">.</span><span class="nf">var</span>  <span class="c1"># =&gt; var in Child</span>
+  <span class="nb">puts</span> <span class="no">AnotherChild</span><span class="p">.</span><span class="nf">var</span> <span class="c1"># =&gt; var in AnotherChild</span>
+
+  <span class="k">class</span> <span class="nc">Parent</span>
+    <span class="vc">@@var</span> <span class="o">=</span> <span class="s1">'var in Parent'</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">var</span>
+     <span class="vc">@@var</span> 
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="nb">puts</span> <span class="no">Parent</span><span class="p">.</span><span class="nf">var</span> <span class="c1"># =&gt; var in Parent</span>
+  <span class="nb">puts</span> <span class="no">Child</span><span class="p">.</span><span class="nf">var</span> <span class="c1"># =&gt; var in Parent</span>
+  <span class="nb">puts</span> <span class="no">AnotherChild</span><span class="p">.</span><span class="nf">var</span> <span class="c1"># =&gt; var in Parent</span>
+</code></pre>
+</div>
+<p>### 如果父类中初始化了类变量的话，所有子类将共享同一个类变量，即使之前各子类都具有不同的类变量定义。</p>
+
+                </section>
+            </article>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+                var disqus_shortname = 'alshin';
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+            <footer id="footer">
+                <div id="social">
+                    <a class="symbol" href="https://github.com/yundshang">
+                      <i class="fa fa-github"></i>
+                    </a>
+                    <a class="symbol" href="https://twitter.com">
+                      <i class="fa fa-twitter"></i>
+                    </a>
+                    <a class="symbol" href="http://weibo.com">
+                      <i class="fa fa-weibo"></i>
+                    </a>
+                </div>
+                <p class="small">
+                    © 版权所有 alshin
+                </p>
+            </footer>
+        </section>
+
+    </body>
+</html>
