@@ -37,6 +37,7 @@ h2,h3,h4,h5,h6 {
 }
 .post-sum h3 {
     font-size: 20px;
+    background:url('../images/65.png');
     font-weight: bold;
     padding-bottom: 0.6em;
     margin: 1.6em 0;
@@ -266,6 +267,7 @@ div.profile {
     /* font: inherit;   */
     vertical-align: baseline;
     margin: 0;
+    background:url('../images/65.png');
     padding: 0
 }
 
@@ -304,6 +306,7 @@ div.profile {
 }
 
 #wrapper {
+    background:url('../images/65.png');
     max-width: 800px;
     margin: 0 auto;
     padding: 60px 40px 100px 40px;
