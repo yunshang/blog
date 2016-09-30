@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>alshin - Ruby里的%Q, %q, %W, %w, %x, %r, %s, %i</title>
+    <meta name="description" content="">
+
+    <link rel="stylesheet" href="/blog/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="/blog/assets/css/animate.css">
+    <link rel="stylesheet" href="/blog/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/blog/assets/css/font.css">
+    <link rel="stylesheet" href="/blog/assets/css/landing.css">
+    <link rel="stylesheet" href="/blog/assets/css/app.css">
+    <link rel="stylesheet" href="/blog/assets/css/highlight.css">
+    <link rel="stylesheet" href="/blog/assets/css/custom.css">
+
+    <link rel="canonical" href="/blog/ruby/2016/09/30/%E7%9A%84%E7%94%A8%E6%B3%95.html">
+    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_1259096643'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1259096643' type='text/javascript'%3E%3C/script%3E"));</script>
+</head>
+
+    <body>
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>Ruby里的%Q, %q, %W, %w, %x, %r, %s, %i</h1>
+                    <h2 class="headline">30 Sep 2016</h2>
+                </header>
+                <section id="post-body">
+                    <blockquote>
+  <p>%Q</p>
+</blockquote>
+
+<h3 id="section">用于替代双引号的字符串. 当你需要在字符串里放入很多引号时候, 可以直接用下面方法而不需要在引号前逐个添加反斜杠 (\“)</h3>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;&gt;</span> <span class="sx">%Q(Joe said: "Frank said: "</span><span class="si">#{</span><span class="n">what_frank_said</span><span class="si">}</span><span class="sx">"")</span>
+<span class="o">=&gt;</span> <span class="s2">"Joe said: "</span><span class="no">Frank</span> <span class="ss">said: </span><span class="s2">"Hello!"""</span>
+</code></pre>
+</div>
+
+<h3 id="q">%Q(…)，这个括号可以被非数字字母的符号或成对的符号代替。</h3>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;&gt;</span> <span class="sx">%Q(Joe said: "Frank said: "</span><span class="si">#{</span><span class="n">what_frank_said</span><span class="si">}</span><span class="sx">"")</span>
+<span class="o">=&gt;</span> <span class="s2">"Joe said: "</span><span class="no">Frank</span> <span class="ss">said: </span><span class="s2">"Hello!"""</span>
+</code></pre>
+</div>
+
+<h3 id="section-1">你还可以这样</h3>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;&gt;</span> <span class="sx">%/Joe said: "Frank said: "#{what_frank_said}""/</span>
+<span class="o">=&gt;</span> <span class="s2">"Joe said: "</span><span class="no">Frank</span> <span class="ss">said: </span><span class="s2">"Hello!"""</span>
+</code></pre>
+</div>
+
+<blockquote>
+  <p>%q</p>
+</blockquote>
+
+<h3 id="q-">它的语法很像%Q, 用于单引号字符串。但使用单引号不受表达式替换，转义序列影响。</h3>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;&gt;</span> <span class="sx">%q(Joe said: 'Frank said: '#{what_frank_said} ' ')</span>
+<span class="o">=&gt;</span> <span class="s2">"Joe said: 'Frank said: '</span><span class="se">\#</span><span class="s2">{what_frank_said} ' '"</span>
+</code></pre>
+</div>
+
+<blockquote>
+  <p>%W</p>
+</blockquote>
+
+<h3 id="q-1">别使用与数组里面的双引号。用法和%Q类似。</h3>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;&gt;</span> <span class="sx">%W(</span><span class="si">#{</span><span class="n">foo</span><span class="si">}</span><span class="sx"> Bar Bar</span><span class="se">\ </span><span class="sx">with</span><span class="se">\ </span><span class="sx">space)</span>
+<span class="o">=&gt;</span> <span class="p">[</span><span class="s2">"Foo"</span><span class="p">,</span> <span class="s2">"Bar"</span><span class="p">,</span> <span class="s2">"Bar with space"</span><span class="p">]</span>
+</code></pre>
+</div>
+
+<blockquote>
+  <p>%w</p>
+</blockquote>
+
+<h3 id="section-2">用于表示其中元素被单引号括起的数组。</h3>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;&gt;</span> <span class="sx">%w(#{foo} Bar Bar\ with\ space)</span>
+<span class="o">=&gt;</span> <span class="p">[</span><span class="s2">"</span><span class="se">\#</span><span class="s2">{foo}"</span><span class="p">,</span> <span class="s2">"Bar"</span><span class="p">,</span> <span class="s2">"Bar with space"</span><span class="p">]</span>
+</code></pre>
+</div>
+
+<blockquote>
+  <p>%x</p>
+</blockquote>
+
+<h3 id="shell">使用`方法执行一段shell脚本并返回标准输出内容。</h3>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;&gt;</span> <span class="sx">%x(echo foo:</span><span class="si">#{</span><span class="n">foo</span><span class="si">}</span><span class="sx">)</span>
+<span class="o">=&gt;</span> <span class="s2">"foo:Foo</span><span class="se">\n</span><span class="s2">"</span>  
+</code></pre>
+</div>
+
+<blockquote>
+  <p>%r</p>
+</blockquote>
+
+<h3 id="q--1">语法近似于%Q, 用于正则表达式.</h3>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;&gt;</span> <span class="sr">%r(/home/</span><span class="si">#{</span><span class="n">foo</span><span class="si">}</span><span class="sr">)</span>
+ <span class="o">=&gt;</span> <span class="s2">"/</span><span class="se">\\</span><span class="s2">/home</span><span class="se">\\</span><span class="s2">/Foo/"</span>   
+</code></pre>
+</div>
+
+<blockquote>
+  <p>%s</p>
+</blockquote>
+
+<h3 id="symbol-">用于表示symbol, 但是不会对其中表达式等内容进行转化。</h3>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;&gt;</span> <span class="sx">%s(foo)</span>
+<span class="o">=&gt;</span> <span class="ss">:foo</span>
+<span class="o">&gt;&gt;</span> <span class="sx">%s(foo bar)</span>
+<span class="o">=&gt;</span> <span class="ss">:"foo bar"</span>
+<span class="o">&gt;&gt;</span> <span class="sx">%s(#{foo} bar)</span>
+<span class="o">=&gt;</span> <span class="ss">:"</span><span class="se">\#</span><span class="ss">{foo} bar"</span>
+</code></pre>
+</div>
+
+<blockquote>
+  <p>%i</p>
+</blockquote>
+
+<h3 id="ruby-20--symbol">Ruby 2.0 之后引入的语法, 用于生成一个symbol数组</h3>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="n">p247</span> <span class="p">:</span><span class="mo">014</span> <span class="o">&gt;</span> <span class="sx">%i(a b c)</span>
+<span class="o">=&gt;</span> <span class="p">[</span><span class="ss">:a</span><span class="p">,</span> <span class="ss">:b</span><span class="p">,</span> <span class="ss">:c</span><span class="p">]</span> 
+</code></pre>
+</div>
+
+                </section>
+            </article>
+
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+                var disqus_shortname = 'alshin';
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+            <footer id="footer">
+                <div id="social">
+                    <a class="symbol" href="https://github.com/yundshang">
+                      <i class="fa fa-github"></i>
+                    </a>
+                    <a class="symbol" href="https://twitter.com">
+                      <i class="fa fa-twitter"></i>
+                    </a>
+                    <a class="symbol" href="http://weibo.com">
+                      <i class="fa fa-weibo"></i>
+                    </a>
+                </div>
+                <p class="small">
+                    © 版权所有 alshin
+                </p>
+            </footer>
+        </section>
+
+    </body>
+</html>

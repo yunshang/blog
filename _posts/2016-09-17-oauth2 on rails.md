@@ -2,7 +2,7 @@
 layout: post
 title: Oauth2 on Rails
 category:  Ruby
-tag: 思考
+tag: 记录
 ---
 > OAuth2是一个关于授权（authorization）的开放网络标准。
 
