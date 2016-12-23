@@ -35,41 +35,41 @@
   <p>var 语句用于声明一个变量列表，跟函数的参数列表一样，类型在最后。如果初始化值已存在，则可以省略类型；变量会从初始值中获得类型。</p>
 </blockquote>
 
-<p>```go
-package main</p>
+<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
 
-<p>import “fmt”</p>
+</span><span class="k">import</span><span class="x"> </span><span class="s">"fmt"</span><span class="x">
 
-<p>var c, python, java bool</p>
+</span><span class="k">var</span><span class="x"> </span><span class="n">c</span><span class="p">,</span><span class="x"> </span><span class="n">python</span><span class="p">,</span><span class="x"> </span><span class="n">java</span><span class="x"> </span><span class="kt">bool</span><span class="x">
 
-<p>func main() {
-    var i int
-    fmt.Println(i, c, python, java)</p>
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="k">var</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="kt">int</span><span class="x">
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="x"> </span><span class="n">c</span><span class="p">,</span><span class="x"> </span><span class="n">python</span><span class="p">,</span><span class="x"> </span><span class="n">java</span><span class="p">)</span><span class="x">
+        
+</span><span class="p">}</span><span class="x">
 
-<p>}</p>
-
-<p>```</p>
+</span></code></pre>
+</div>
 
 <blockquote>
   <p>在函数中，简洁赋值语句 := 可在类型明确的地方代替 var 声明。 函数外的每个语句都必须以关键字开始（ var 、 func 等等）， 因此 := 结构不能在函数外使用。</p>
 </blockquote>
 
-<p>```go
-package main</p>
+<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
 
-<p>import “fmt”</p>
+</span><span class="k">import</span><span class="x"> </span><span class="s">"fmt"</span><span class="x">
 
-<p>var c, python, java bool</p>
+</span><span class="k">var</span><span class="x"> </span><span class="n">c</span><span class="p">,</span><span class="x"> </span><span class="n">python</span><span class="p">,</span><span class="x"> </span><span class="n">java</span><span class="x"> </span><span class="kt">bool</span><span class="x">
 
-<p>func main() {
-	var i, j int = 1, 2
-	k := 3
-	c, python, java := true, false, “no!”</p>
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="k">var</span><span class="x"> </span><span class="n">i</span><span class="p">,</span><span class="x"> </span><span class="n">j</span><span class="x"> </span><span class="kt">int</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="m">1</span><span class="p">,</span><span class="x"> </span><span class="m">2</span><span class="x">
+	</span><span class="n">k</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="m">3</span><span class="x">
+	</span><span class="n">c</span><span class="p">,</span><span class="x"> </span><span class="n">python</span><span class="p">,</span><span class="x"> </span><span class="n">java</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="no">true</span><span class="p">,</span><span class="x"> </span><span class="no">false</span><span class="p">,</span><span class="x"> </span><span class="s">"no!"</span><span class="x">
 
-<pre><code>fmt.Println(i, j, k, c, python, java) }
-</code></pre>
+	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="x"> </span><span class="n">j</span><span class="p">,</span><span class="x"> </span><span class="n">k</span><span class="p">,</span><span class="x"> </span><span class="n">c</span><span class="p">,</span><span class="x"> </span><span class="n">python</span><span class="p">,</span><span class="x"> </span><span class="n">java</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span><span class="x">
 
-<p>```</p>
+</span></code></pre>
+</div>
 
 <h2 id="go">go基本类型</h2>
 
@@ -79,18 +79,18 @@ package main</p>
 
 <h3 id="section-1">类型转换</h3>
 
-<p>```go
-var i int = 42
-var f float64 = float64(i)
-var u uint = uint(f)</p>
+<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="k">var</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="kt">int</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="m">42</span><span class="x">
+</span><span class="k">var</span><span class="x"> </span><span class="n">f</span><span class="x"> </span><span class="kt">float64</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="kt">float64</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="x">
+</span><span class="k">var</span><span class="x"> </span><span class="n">u</span><span class="x"> </span><span class="kt">uint</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="kt">uint</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="x">
 
-<p>// 或者，更加简单的形式：</p>
+</span><span class="c">// 或者，更加简单的形式：</span><span class="x">
 
-<p>i := 42
-f := float64(i)
-u := uint(f)</p>
+</span><span class="n">i</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="m">42</span><span class="x">
+</span><span class="n">f</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="kt">float64</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="x">
+</span><span class="n">u</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="kt">uint</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="x">
 
-<p>```</p>
+</span></code></pre>
+</div>
 
 <h2 id="section-2">类型推导</h2>
 
@@ -98,10 +98,10 @@ u := uint(f)</p>
   <p>在声明一个变量而不指定其类型时（即使用不带类型的 := 语法 或 var = 表达式语法）， 变量的类型由右值推导得出.</p>
 </blockquote>
 
-<p><code>go
-var i int
-j := i // j 也是一个 int
-</code></p>
+<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="k">var</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="kt">int</span><span class="x">
+</span><span class="n">j</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="c">// j 也是一个 int</span><span class="x">
+</span></code></pre>
+</div>
 
 <h2 id="defer">defer</h2>
 
@@ -109,16 +109,17 @@ j := i // j 也是一个 int
   <p>defer 语句会将函数推迟到外层函数返回之后执行。推迟调用的函数其参数会立即求值，但直到外层函数返回前该函数都不会被调用。</p>
 </blockquote>
 
-<p>```go
-package main</p>
+<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
 
-<p>import “fmt”</p>
+</span><span class="k">import</span><span class="x"> </span><span class="s">"fmt"</span><span class="x">
 
-<p>func main() {
-	defer fmt.Println(“world”)</p>
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="k">defer</span><span class="x"> </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"world"</span><span class="p">)</span><span class="x">
 
-<pre><code>fmt.Println("hello") } ```
-</code></pre>
+	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"hello"</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span></code></pre>
+</div>
 
 <h2 id="section-3">数组</h2>
 
@@ -132,66 +133,66 @@ package main</p>
   <p>切面可以用内建函数 make 来创建，这也是你创建动态数组的方式。make 函数会分配一个元素为零值的数组并返回一个引用了它的切片.</p>
 </blockquote>
 
-<p>```go
-package main</p>
+<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
 
-<p>import “fmt”</p>
+</span><span class="k">import</span><span class="x"> </span><span class="s">"fmt"</span><span class="x">
 
-<p>func main() {
-	a := make([]int, 5)
-	printSlice(“a”, a)</p>
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">a</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span><span class="x"> </span><span class="m">5</span><span class="p">)</span><span class="x">
+	</span><span class="n">printSlice</span><span class="p">(</span><span class="s">"a"</span><span class="p">,</span><span class="x"> </span><span class="n">a</span><span class="p">)</span><span class="x">
 
-<pre><code>b := make([]int, 0, 5)
-printSlice("b", b)
+	</span><span class="n">b</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span><span class="x"> </span><span class="m">0</span><span class="p">,</span><span class="x"> </span><span class="m">5</span><span class="p">)</span><span class="x">
+	</span><span class="n">printSlice</span><span class="p">(</span><span class="s">"b"</span><span class="p">,</span><span class="x"> </span><span class="n">b</span><span class="p">)</span><span class="x">
 
-c := b[:2]
-printSlice("c", c)
+	</span><span class="n">c</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">b</span><span class="p">[</span><span class="o">:</span><span class="m">2</span><span class="p">]</span><span class="x">
+	</span><span class="n">printSlice</span><span class="p">(</span><span class="s">"c"</span><span class="p">,</span><span class="x"> </span><span class="n">c</span><span class="p">)</span><span class="x">
 
-d := c[2:5]
-printSlice("d", d) }
-</code></pre>
+	</span><span class="n">d</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">c</span><span class="p">[</span><span class="m">2</span><span class="o">:</span><span class="m">5</span><span class="p">]</span><span class="x">
+	</span><span class="n">printSlice</span><span class="p">(</span><span class="s">"d"</span><span class="p">,</span><span class="x"> </span><span class="n">d</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span><span class="x">
 
-<p>func printSlice(s string, x []int) {
-	fmt.Printf(“%s len=%d cap=%d %v\n”,
-		s, len(x), cap(x), x)
-}
-```</p>
+</span><span class="k">func</span><span class="x"> </span><span class="n">printSlice</span><span class="p">(</span><span class="n">s</span><span class="x"> </span><span class="kt">string</span><span class="p">,</span><span class="x"> </span><span class="n">x</span><span class="x"> </span><span class="p">[]</span><span class="kt">int</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"%s len=%d cap=%d %v</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="x">
+		</span><span class="n">s</span><span class="p">,</span><span class="x"> </span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="x"> </span><span class="nb">cap</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="x"> </span><span class="n">x</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span></code></pre>
+</div>
 
 <h2 id="section-5">切片的切片</h2>
 
-<p>```go
-package main</p>
+<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
 
-<p>import (
-	“fmt”
-	“strings”
-)</p>
+</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
+	</span><span class="s">"fmt"</span><span class="x">
+	</span><span class="s">"strings"</span><span class="x">
+</span><span class="p">)</span><span class="x">
 
-<p>func main() {
-	// Create a tic-tac-toe board.
-	board := [][]string{
-		[]string{“<em>”, “</em>”, “<em>”},
-		[]string{“</em>”, “<em>”, “</em>”},
-		[]string{“<em>”, “</em>”, “_”},
-	}</p>
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="c">// Create a tic-tac-toe board.</span><span class="x">
+	</span><span class="n">board</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="p">[][]</span><span class="kt">string</span><span class="p">{</span><span class="x">
+		</span><span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">"_"</span><span class="p">,</span><span class="x"> </span><span class="s">"_"</span><span class="p">,</span><span class="x"> </span><span class="s">"_"</span><span class="p">},</span><span class="x">
+		</span><span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">"_"</span><span class="p">,</span><span class="x"> </span><span class="s">"_"</span><span class="p">,</span><span class="x"> </span><span class="s">"_"</span><span class="p">},</span><span class="x">
+		</span><span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">"_"</span><span class="p">,</span><span class="x"> </span><span class="s">"_"</span><span class="p">,</span><span class="x"> </span><span class="s">"_"</span><span class="p">},</span><span class="x">
+	</span><span class="p">}</span><span class="x">
 
-<pre><code>// The players take turns.
-board[0][0] = "X"
-board[2][2] = "O"
-board[1][2] = "X"
-board[1][0] = "O"
-board[0][2] = "X"
+	</span><span class="c">// The players take turns.</span><span class="x">
+	</span><span class="n">board</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="m">0</span><span class="p">]</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="s">"X"</span><span class="x">
+	</span><span class="n">board</span><span class="p">[</span><span class="m">2</span><span class="p">][</span><span class="m">2</span><span class="p">]</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="s">"O"</span><span class="x">
+	</span><span class="n">board</span><span class="p">[</span><span class="m">1</span><span class="p">][</span><span class="m">2</span><span class="p">]</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="s">"X"</span><span class="x">
+	</span><span class="n">board</span><span class="p">[</span><span class="m">1</span><span class="p">][</span><span class="m">0</span><span class="p">]</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="s">"O"</span><span class="x">
+	</span><span class="n">board</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="m">2</span><span class="p">]</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="s">"X"</span><span class="x">
 
-for i := 0; i &lt; len(board); i++ {
-	fmt.Printf("%s\n", strings.Join(board[i], " "))
-} }
-</code></pre>
+	</span><span class="k">for</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="m">0</span><span class="p">;</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">&lt;</span><span class="x"> </span><span class="nb">len</span><span class="p">(</span><span class="n">board</span><span class="p">);</span><span class="x"> </span><span class="n">i</span><span class="o">++</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="x"> </span><span class="n">strings</span><span class="o">.</span><span class="n">Join</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="x"> </span><span class="s">" "</span><span class="p">))</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+</span><span class="p">}</span><span class="x">
 
-<p>// result
-// X _ X
-// O _ X
-// _ _ O
-```</p>
+</span><span class="c">// result</span><span class="x">
+</span><span class="c">// X _ X</span><span class="x">
+</span><span class="c">// O _ X</span><span class="x">
+</span><span class="c">// _ _ O</span><span class="x">
+</span></code></pre>
+</div>
 
 <h2 id="range">Range</h2>
 
@@ -201,29 +202,29 @@ for i := 0; i &lt; len(board); i++ {
 
 <h2 id="section-6">修改映射</h2>
 
-<p>```go
-在映射 m 中插入或修改元素：</p>
+<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="n">在映射</span><span class="x"> </span><span class="n">m</span><span class="x"> </span><span class="n">中插入或修改元素</span><span class="err">：</span><span class="x">
 
-<p>m[key] = elem
-获取元素：</p>
+</span><span class="n">m</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">elem</span><span class="x">
+</span><span class="n">获取元素</span><span class="err">：</span><span class="x">
 
-<p>elem = m[key]
-删除元素：</p>
+</span><span class="n">elem</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">m</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="x">
+</span><span class="n">删除元素</span><span class="err">：</span><span class="x">
 
-<p>delete(m, key)
-通过双赋值检测某个键是否存在：</p>
+</span><span class="nb">delete</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="x"> </span><span class="n">key</span><span class="p">)</span><span class="x">
+</span><span class="n">通过双赋值检测某个键是否存在</span><span class="err">：</span><span class="x">
 
-<p>elem, ok = m[key]
-若 key 在 m 中， ok 为 true ；否则， ok 为 false 。</p>
+</span><span class="n">elem</span><span class="p">,</span><span class="x"> </span><span class="n">ok</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">m</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="x">
+</span><span class="n">若</span><span class="x"> </span><span class="n">key</span><span class="x"> </span><span class="n">在</span><span class="x"> </span><span class="n">m</span><span class="x"> </span><span class="n">中</span><span class="err">，</span><span class="x"> </span><span class="n">ok</span><span class="x"> </span><span class="n">为</span><span class="x"> </span><span class="no">true</span><span class="x"> </span><span class="err">；</span><span class="n">否则</span><span class="err">，</span><span class="x"> </span><span class="n">ok</span><span class="x"> </span><span class="n">为</span><span class="x"> </span><span class="no">false</span><span class="x"> </span><span class="err">。</span><span class="x">
 
-<p>若 key 不在映射中，那么 elem 是该映射元素类型的零值。</p>
+</span><span class="n">若</span><span class="x"> </span><span class="n">key</span><span class="x"> </span><span class="n">不在映射中</span><span class="err">，</span><span class="n">那么</span><span class="x"> </span><span class="n">elem</span><span class="x"> </span><span class="n">是该映射元素类型的零值</span><span class="err">。</span><span class="x">
 
-<p>同样的，当从 映射 中读取某个不存在的键时，结果是 映射 的元素类型的零值。</p>
+</span><span class="n">同样的</span><span class="err">，</span><span class="n">当从</span><span class="x"> </span><span class="n">映射</span><span class="x"> </span><span class="n">中读取某个不存在的键时</span><span class="err">，</span><span class="n">结果是</span><span class="x"> </span><span class="n">映射</span><span class="x"> </span><span class="n">的元素类型的零值</span><span class="err">。</span><span class="x">
 
-<p>注 ：若 elem 或 ok 还未声明，你可以使用短变量声明：</p>
+</span><span class="n">注</span><span class="x"> </span><span class="err">：</span><span class="n">若</span><span class="x"> </span><span class="n">elem</span><span class="x"> </span><span class="n">或</span><span class="x"> </span><span class="n">ok</span><span class="x"> </span><span class="n">还未声明</span><span class="err">，</span><span class="n">你可以使用短变量声明</span><span class="err">：</span><span class="x">
 
-<p>elem, ok := m[key]
-```</p>
+</span><span class="n">elem</span><span class="p">,</span><span class="x"> </span><span class="n">ok</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">m</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="x">
+</span></code></pre>
+</div>
 
                 </section>
             </article>
