@@ -35,11 +35,11 @@
   <p>写Go代码的时候经常用到import这个命令用来导入包文件，而我们经常看到的方式参考如下：</p>
 </blockquote>
 
-<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="k">import</span><span class="p">(</span><span class="x">
-    </span><span class="s">"fmt"</span><span class="x">
-</span><span class="p">)</span><span class="x">
-</span></code></pre>
-</div>
+<p><code>go
+import(
+    "fmt"
+)
+</code></p>
 
 <h3 id="goimport">Go的import加载模块方式</h3>
 
@@ -57,11 +57,11 @@ import “shorturl/model” //加载gopath/src/shorturl/model模块</p>
   </li>
 </ul>
 
-<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="k">import</span><span class="p">(</span><span class="x">
-   </span><span class="o">.</span><span class="s">"fmt"</span><span class="x">
-</span><span class="p">)</span><span class="x">
-</span></code></pre>
-</div>
+<p><code>go
+import(
+   ."fmt"
+)
+</code></p>
 
 <p>这个点操作的含义就是这个包导入之后在你调用这个包的函数时，你可以省略前缀的包名，也就是前面你调用的fmt.Println(“hello world”)可以省略的写成Println(“hello world”)</p>
 
@@ -69,23 +69,23 @@ import “shorturl/model” //加载gopath/src/shorturl/model模块</p>
   <li>别名操作</li>
 </ul>
 
-<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="k">import</span><span class="p">(</span><span class="x">
-    </span><span class="n">f</span><span class="x"> </span><span class="s">"fmt"</span><span class="x">
-</span><span class="p">)</span><span class="x">
-</span></code></pre>
-</div>
+<p><code>go
+import(
+    f "fmt"
+)
+</code></p>
 
 <ul>
   <li>_操作</li>
 </ul>
 
-<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
-    </span><span class="s">"database/sql"</span><span class="x">
-    </span><span class="n">_</span><span class="x"> </span><span class="s">"github.com/ziutek/mymysql/godrv"</span><span class="x">
-</span><span class="p">)</span><span class="x">
-</span></code></pre>
-</div>
-<p>_操作其实是引入该包，而不直接使用包里面的函数，而是调用了该包里面的init函数。</p>
+<p><code>go
+import (
+    "database/sql"
+    _ "github.com/ziutek/mymysql/godrv"
+)
+</code>
+_操作其实是引入该包，而不直接使用包里面的函数，而是调用了该包里面的init函数。</p>
 
                 </section>
             </article>
