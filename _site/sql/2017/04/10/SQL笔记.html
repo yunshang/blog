@@ -29,109 +29,100 @@
                     <h2 class="headline">10 Apr 2017</h2>
                 </header>
                 <section id="post-body">
-                    <blockquote>
-  <p>SQL连接可以分为内连接、外连接、交叉连接。</p>
-</blockquote>
+                    <blockquote><p>SQL连接可以分为内连接、外连接、交叉连接。</p></blockquote>
 
-<h2 id="section">内连接</h2>
+<h2>内连接</h2>
 
 <ul>
-  <li>
-    <p>等值连接：在连接条件中使用等于号(=)运算符比较被连接列的列值，其查询结果中列出被连接表中的所有列，包括其中的重复列。</p>
-  </li>
-  <li>
-    <p>不等值连接：在连接条件使用除等于运算符以外的其它比较运算符比较被连接的列的列值。这些运算符包括&gt;、&gt;=、&lt;=、&lt;、!&gt;、!&lt;和&lt;&gt;。</p>
-  </li>
-  <li>
-    <p>自然连接：在连接条件中使用等于(=)运算符比较被连接列的列值，但它使用选择列表指出查询结果集合中所包括的列，并删除连接表中的重复列。</p>
-  </li>
+<li><p>等值连接：在连接条件中使用等于号(=)运算符比较被连接列的列值，其查询结果中列出被连接表中的所有列，包括其中的重复列。</p></li>
+<li><p>不等值连接：在连接条件使用除等于运算符以外的其它比较运算符比较被连接的列的列值。这些运算符包括>、>=、&lt;=、&lt;、!>、!&lt;和&lt;>。</p></li>
+<li><p>自然连接：在连接条件中使用等于(=)运算符比较被连接列的列值，但它使用选择列表指出查询结果集合中所包括的列，并删除连接表中的重复列。</p></li>
 </ul>
 
-<p><code>ruby
-   select * from book as a,stu as b where a.sutid = b.stuid select * from book as a inner join stu as b on a.sutid = b.stuid
-</code>
-## 外连接</p>
+
+<pre><code class="ruby">   select * from book as a,stu as b where a.sutid = b.stuid select * from book as a inner join stu as b on a.sutid = b.stuid
+</code></pre>
+
+<h2>外连接</h2>
 
 <ul>
-  <li>左连接：是以左表为基准，将a.stuid = b.stuid的数据进行连接，然后将左表没有的对应项显示，右表的列为NULL</li>
+<li>左连接：是以左表为基准，将a.stuid = b.stuid的数据进行连接，然后将左表没有的对应项显示，右表的列为NULL</li>
 </ul>
 
-<p><code>ruby
-   select * from book as a left join stu as b on a.sutid = b.stuid
-</code></p>
+
+<pre><code class="ruby">   select * from book as a left join stu as b on a.sutid = b.stuid
+</code></pre>
 
 <ul>
-  <li>右连接：是以右表为基准，将a.stuid = b.stuid的数据进行连接，然以将右表没有的对应项显示，左表的列为NULL</li>
+<li>右连接：是以右表为基准，将a.stuid = b.stuid的数据进行连接，然以将右表没有的对应项显示，左表的列为NULL</li>
 </ul>
 
-<p><code>ruby
-   select * from book as a right join stu as b on a.sutid = b.stuid
-</code></p>
+
+<pre><code class="ruby">   select * from book as a right join stu as b on a.sutid = b.stuid
+</code></pre>
 
 <ul>
-  <li>全连接：完整外部联接返回左表和右表中的所有行。当某行在另一个表中没有匹配行时，则另一个表的选择列表列包含空值。如果表之间有匹配行，则整个结果集行包含基表的数据值。</li>
+<li>全连接：完整外部联接返回左表和右表中的所有行。当某行在另一个表中没有匹配行时，则另一个表的选择列表列包含空值。如果表之间有匹配行，则整个结果集行包含基表的数据值。</li>
 </ul>
 
-<p><code>ruby
-select * from book as a full outer join stu as b on a.sutid = b.stuid
-</code></p>
 
-<h2 id="section-1">交叉连接</h2>
+<pre><code class="ruby">select * from book as a full outer join stu as b on a.sutid = b.stuid
+</code></pre>
+
+<h2>交叉连接</h2>
 
 <ul>
-  <li>交叉连接：交叉联接返回左表中的所有行，左表中的每一行与右表中的所有行组合。交叉联接也称作笛卡尔积。</li>
+<li>交叉连接：交叉联接返回左表中的所有行，左表中的每一行与右表中的所有行组合。交叉联接也称作笛卡尔积。</li>
 </ul>
 
-<p><code>ruby
-select * from book as a cross join stu as b order by a.id
-</code></p>
 
-<h2 id="section-2">子查询</h2>
+<pre><code class="ruby">select * from book as a cross join stu as b order by a.id
+</code></pre>
 
-<blockquote>
-  <p>子查询（Sub Query）或者说内查询（Inner Query），也可以称作嵌套查询（Nested Query），是一种嵌套在其他 SQL 查询的 WHERE 子句中的查询。</p>
-</blockquote>
+<h2>子查询</h2>
+
+<blockquote><p>子查询（Sub Query）或者说内查询（Inner Query），也可以称作嵌套查询（Nested Query），是一种嵌套在其他 SQL 查询的 WHERE 子句中的查询。</p></blockquote>
 
 <ul>
-  <li>单行子查询</li>
+<li>单行子查询</li>
 </ul>
 
-<p><code>ruby
- select ename,deptno,sal from emp where deptno=(select deptno from dept where loc='NEW YORK')；
-</code></p>
+
+<pre><code class="ruby"> select ename,deptno,sal from emp where deptno=(select deptno from dept where loc='NEW YORK')；
+</code></pre>
 
 <ul>
-  <li>多行子查询</li>
+<li>多行子查询</li>
 </ul>
 
-<p><code>ruby
- select ename,job,sal FROM EMP WHERE deptno in ( SELECT deptno FROM dept WHERE dname LIKE 'A%')；
-</code></p>
+
+<pre><code class="ruby"> select ename,job,sal FROM EMP WHERE deptno in ( SELECT deptno FROM dept WHERE dname LIKE 'A%')；
+</code></pre>
 
 <ul>
-  <li>多列子查询</li>
+<li>多列子查询</li>
 </ul>
 
-<p><code>ruby
- SELECT deptno,ename,job,sal FROM EMP WHERE (deptno,sal) IN (SELECT deptno,MAX(sal) FROM EMP GROUP BY deptno)；
-</code></p>
+
+<pre><code class="ruby"> SELECT deptno,ename,job,sal FROM EMP WHERE (deptno,sal) IN (SELECT deptno,MAX(sal) FROM EMP GROUP BY deptno)；
+</code></pre>
 
 <ul>
-  <li>内联视图子查询</li>
+<li>内联视图子查询</li>
 </ul>
 
-<p><code>ruby
- SELECT ename,job,sal,rownum FROM (SELECT ename,job,sal FROM EMP ORDER BY sal)；
+
+<pre><code class="ruby"> SELECT ename,job,sal,rownum FROM (SELECT ename,job,sal FROM EMP ORDER BY sal)；
  SELECT ename,job,sal,rownum FROM ( SELECT ename,job,sal FROM EMP ORDER BY sal) WHERE rownum&lt;=5；
-</code></p>
+</code></pre>
 
 <ul>
-  <li>在HAVING子句中使用子查询</li>
+<li>在HAVING子句中使用子查询</li>
 </ul>
 
-<p><code>ruby
-  SELECT deptno,job,AVG(sal) FROM EMP GROUP BY deptno,job HAVING AVG(sal)&gt;(SELECT sal FROM EMP WHERE ename='MARTIN')；
-</code></p>
+
+<pre><code class="ruby">  SELECT deptno,job,AVG(sal) FROM EMP GROUP BY deptno,job HAVING AVG(sal)&gt;(SELECT sal FROM EMP WHERE ename='MARTIN')；
+</code></pre>
 
                 </section>
             </article>

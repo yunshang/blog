@@ -29,100 +29,91 @@
                     <h2 class="headline">17 Sep 2016</h2>
                 </header>
                 <section id="post-body">
-                    <blockquote>
-  <p>第一篇我们构建了Oauth 服务应用,现在我们创建一个发客服端应用。</p>
-</blockquote>
+                    <blockquote><p>第一篇我们构建了Oauth 服务应用,现在我们创建一个发客服端应用。</p></blockquote>
 
-<h3 id="omniauth-oauth2-gemoauth2strategy">omniauth-oauth2 gem,允许我们在试用Oauth2的时候，仅通过一个简单的配置文件(strategy)就可以办到。</h3>
+<h3>omniauth-oauth2 gem,允许我们在试用Oauth2的时候，仅通过一个简单的配置文件(strategy)就可以办到。</h3>
 
-<p><code>ruby
-gem 'omniauth-oauth2'
-</code></p>
+<pre><code class="ruby">gem 'omniauth-oauth2'
+</code></pre>
 
-<h3 id="omniauth-gemoath">Omniauth 是一个通用gem,它允许程序员用它使用各种oath提供者，通过不同的配置。</h3>
+<h3>Omniauth 是一个通用gem,它允许程序员用它使用各种oath提供者，通过不同的配置。</h3>
 
-<h3 id="libdoorkeeperrb">在lib下创建doorkeeper.rb</h3>
+<h3>在lib下创建doorkeeper.rb</h3>
 
-<p>```ruby
-require ‘omniauth-oauth2’</p>
+<pre><code class="ruby">require 'omniauth-oauth2'
 
-<p>module OmniAuth
+module OmniAuth
   module Strategies
     class Doorkeeper &lt; OmniAuth::Strategies::OAuth2
-      option :name, ‘doorkeeper’
+      option :name, 'doorkeeper'
       option :client_options, {
-        site:          ‘http://localhost:3000’,
-        authorize_url: ‘http://localhost:3000/oauth/authorize’
-      }</p>
+        site:          'http://localhost:3000',
+        authorize_url: 'http://localhost:3000/oauth/authorize'
+      }
 
-<pre><code>  uid {
-    raw_info['id']
-  }
+      uid {
+        raw_info['id']
+      }
 
-  info do
-    {
-      email: raw_info['email'],
-    }
+      info do
+        {
+          email: raw_info['email'],
+        }
+      end
+
+      extra do
+        { raw_info: raw_info }
+      end
+
+      def raw_info
+        @raw_info ||= access_token.get('/me').parsed
+      end
+    end
   end
-
-  extra do
-    { raw_info: raw_info }
-  end
-
-  def raw_info
-    @raw_info ||= access_token.get('/me').parsed
-  end
-end   end end ``` 
-</code></pre>
-
-<h3 id="omniauth">再生成omniauth的配置文件</h3>
-
-<p><code>ruby
-touch config/initializers/omniauth.rb
-</code></p>
-
-<p>```ruby
-require ‘doorkeeper’</p>
-
-<p>Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :doorkeeper, <application_id>, <application_secret>
 end
-```</application_secret></application_id></p>
-
-<h3 id="applicationid--applicationsecret-">application_id 和 application_secret 填入上一篇文章中得到的值。</h3>
-
-<h3 id="section">配置路由</h3>
-
-<p>```ruby
-Rails.application.routes.draw do
-  root to: redirect(‘/auth/doorkeeper’)</p>
-
-<pre><code>get '/auth/:provider/callback' =&gt; 'application#authentication_callback'
-end   end ``` 
 </code></pre>
 
-<h3 id="doorkeeperomniauth">第一行doorkeeper的认证路由，将会被omniauth处理，第二行服务器的回调地址，将会有身份验证。</h3>
+<h3>再生成omniauth的配置文件</h3>
 
-<p><code>ruby
-class ApplicationController &lt; ActionController::Base
+<pre><code class="ruby">touch config/initializers/omniauth.rb
+</code></pre>
+
+<pre><code class="ruby">require 'doorkeeper'
+
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :doorkeeper, &lt;application_id&gt;, &lt;application_secret&gt;
+end
+</code></pre>
+
+<h3>application_id 和 application_secret 填入上一篇文章中得到的值。</h3>
+
+<h3>配置路由</h3>
+
+<pre><code class="ruby">Rails.application.routes.draw do
+  root to: redirect('/auth/doorkeeper')
+
+    get '/auth/:provider/callback' =&gt; 'application#authentication_callback'
+    end
+  end
+</code></pre>
+
+<h3>第一行doorkeeper的认证路由，将会被omniauth处理，第二行服务器的回调地址，将会有身份验证。</h3>
+
+<pre><code class="ruby">class ApplicationController &lt; ActionController::Base
   auth = request.env['omniauth.auth']
     render json: auth.to_json
     end
   end
-</code></p>
+</code></pre>
 
-<h3 id="section-1">参考资料</h3>
+<h3>参考资料</h3>
+
 <ul>
-  <li>
-    <p>http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html</p>
-  </li>
-  <li>
-    <p>https://ruby-china.org/topics/14656</p>
-  </li>
-  <li>
-    <p>http://linjunzhu.github.io/blog/2014/09/21/doorkeepershi-yong-jian-jie/</p>
-  </li>
+<li><p>http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html</p></li>
+<li><p>https://ruby-china.org/topics/14656</p></li>
+<li><p>http://linjunzhu.github.io/blog/2014/09/21/doorkeepershi-yong-jian-jie/</p></li>
 </ul>
+
 
                 </section>
             </article>

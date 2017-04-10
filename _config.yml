@@ -1,4 +1,6 @@
 title: "alshin"
+markdown: rdiscount
+highlighter: pygments
 github_username: yunshang
 baseurl: /blog
 paginate: 2

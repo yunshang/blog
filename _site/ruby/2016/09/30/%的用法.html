@@ -29,111 +29,85 @@
                     <h2 class="headline">30 Sep 2016</h2>
                 </header>
                 <section id="post-body">
-                    <blockquote>
-  <p>%Q</p>
-</blockquote>
+                    <blockquote><p>%Q</p></blockquote>
 
-<h3 id="section">用于替代双引号的字符串. 当你需要在字符串里放入很多引号时候, 可以直接用下面方法而不需要在引号前逐个添加反斜杠 (\“)</h3>
+<h3>用于替代双引号的字符串. 当你需要在字符串里放入很多引号时候, 可以直接用下面方法而不需要在引号前逐个添加反斜杠 (\“)</h3>
 
-<p><code>ruby
-&gt;&gt; %Q(Joe said: "Frank said: "#{what_frank_said}"")
+<pre><code class="ruby">&gt;&gt; %Q(Joe said: "Frank said: "#{what_frank_said}"")
 =&gt; "Joe said: "Frank said: "Hello!"""
-</code></p>
+</code></pre>
 
-<h3 id="q">%Q(…)，这个括号可以被非数字字母的符号或成对的符号代替。</h3>
+<h3>%Q(...)，这个括号可以被非数字字母的符号或成对的符号代替。</h3>
 
-<p><code>ruby
-&gt;&gt; %Q(Joe said: "Frank said: "#{what_frank_said}"")
+<pre><code class="ruby">&gt;&gt; %Q(Joe said: "Frank said: "#{what_frank_said}"")
 =&gt; "Joe said: "Frank said: "Hello!"""
-</code></p>
+</code></pre>
 
-<h3 id="section-1">你还可以这样</h3>
+<h3>你还可以这样</h3>
 
-<p><code>ruby
-&gt;&gt; %/Joe said: "Frank said: "#{what_frank_said}""/
+<pre><code class="ruby">&gt;&gt; %/Joe said: "Frank said: "#{what_frank_said}""/
 =&gt; "Joe said: "Frank said: "Hello!"""
-</code></p>
+</code></pre>
 
-<blockquote>
-  <p>%q</p>
-</blockquote>
+<blockquote><p>%q</p></blockquote>
 
-<h3 id="q-">它的语法很像%Q, 用于单引号字符串。但使用单引号不受表达式替换，转义序列影响。</h3>
+<h3>它的语法很像%Q, 用于单引号字符串。但使用单引号不受表达式替换，转义序列影响。</h3>
 
-<p><code>ruby
-&gt;&gt; %q(Joe said: 'Frank said: '#{what_frank_said} ' ')
+<pre><code class="ruby">&gt;&gt; %q(Joe said: 'Frank said: '#{what_frank_said} ' ')
 =&gt; "Joe said: 'Frank said: '\#{what_frank_said} ' '"
-</code></p>
+</code></pre>
 
-<blockquote>
-  <p>%W</p>
-</blockquote>
+<blockquote><p>%W</p></blockquote>
 
-<h3 id="q-1">别使用与数组里面的双引号。用法和%Q类似。</h3>
+<h3>别使用与数组里面的双引号。用法和%Q类似。</h3>
 
-<p><code>ruby
-&gt;&gt; %W(#{foo} Bar Bar\ with\ space)
+<pre><code class="ruby">&gt;&gt; %W(#{foo} Bar Bar\ with\ space)
 =&gt; ["Foo", "Bar", "Bar with space"]
-</code></p>
+</code></pre>
 
-<blockquote>
-  <p>%w</p>
-</blockquote>
+<blockquote><p>%w</p></blockquote>
 
-<h3 id="section-2">用于表示其中元素被单引号括起的数组。</h3>
+<h3>用于表示其中元素被单引号括起的数组。</h3>
 
-<p><code>ruby
-&gt;&gt; %w(#{foo} Bar Bar\ with\ space)
+<pre><code class="ruby">&gt;&gt; %w(#{foo} Bar Bar\ with\ space)
 =&gt; ["\#{foo}", "Bar", "Bar with space"]
-</code></p>
+</code></pre>
 
-<blockquote>
-  <p>%x</p>
-</blockquote>
+<blockquote><p>%x</p></blockquote>
 
-<h3 id="shell">使用`方法执行一段shell脚本并返回标准输出内容。</h3>
+<h3>使用`方法执行一段shell脚本并返回标准输出内容。</h3>
 
-<p><code>ruby
-&gt;&gt; %x(echo foo:#{foo})
+<pre><code class="ruby">&gt;&gt; %x(echo foo:#{foo})
 =&gt; "foo:Foo\n"  
-</code></p>
+</code></pre>
 
-<blockquote>
-  <p>%r</p>
-</blockquote>
+<blockquote><p>%r</p></blockquote>
 
-<h3 id="q--1">语法近似于%Q, 用于正则表达式.</h3>
+<h3>语法近似于%Q, 用于正则表达式.</h3>
 
-<p><code>ruby
-&gt;&gt; %r(/home/#{foo})
+<pre><code class="ruby">&gt;&gt; %r(/home/#{foo})
  =&gt; "/\\/home\\/Foo/"   
-</code></p>
+</code></pre>
 
-<blockquote>
-  <p>%s</p>
-</blockquote>
+<blockquote><p>%s</p></blockquote>
 
-<h3 id="symbol-">用于表示symbol, 但是不会对其中表达式等内容进行转化。</h3>
+<h3>用于表示symbol, 但是不会对其中表达式等内容进行转化。</h3>
 
-<p><code>ruby
-&gt;&gt; %s(foo)
+<pre><code class="ruby">&gt;&gt; %s(foo)
 =&gt; :foo
 &gt;&gt; %s(foo bar)
 =&gt; :"foo bar"
 &gt;&gt; %s(#{foo} bar)
 =&gt; :"\#{foo} bar"
-</code></p>
+</code></pre>
 
-<blockquote>
-  <p>%i</p>
-</blockquote>
+<blockquote><p>%i</p></blockquote>
 
-<h3 id="ruby-20--symbol">Ruby 2.0 之后引入的语法, 用于生成一个symbol数组</h3>
+<h3>Ruby 2.0 之后引入的语法, 用于生成一个symbol数组</h3>
 
-<p><code>ruby
-2.0.0p247 :014 &gt; %i(a b c)
+<pre><code class="ruby">2.0.0p247 :014 &gt; %i(a b c)
 =&gt; [:a, :b, :c] 
-</code></p>
+</code></pre>
 
                 </section>
             </article>

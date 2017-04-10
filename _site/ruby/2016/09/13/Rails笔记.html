@@ -29,58 +29,52 @@
                     <h2 class="headline">13 Sep 2016</h2>
                 </header>
                 <section id="post-body">
-                    <h2 id="section">简洁代码</h2>
+                    <h2>简洁代码</h2>
 
-<blockquote>
-  <p>臃肿的写法</p>
-</blockquote>
+<blockquote><p>臃肿的写法</p></blockquote>
 
-<p><code>ruby
-flag = false
+<pre><code class="ruby">flag = false
 if request.referer.present?
   if request.referer.include?("/users/sign_in") || request.referer.include?("/users/sign_up")
     flag = true
   end
 end
-</code> 
-&gt; 简洁写法</p>
+</code></pre>
 
-<p><code>ruby
- flag = request.referer &amp;&amp; ["/users/sign_in", "/users/sign_up"].include?(request.referer)
-</code></p>
+<blockquote><p>简洁写法</p></blockquote>
 
-<p>```ruby
-@filters_arry = Array.new  #bad
-@filters_arry = [] #good</p>
+<pre><code class="ruby"> flag = request.referer &amp;&amp; ["/users/sign_in", "/users/sign_up"].include?(request.referer)
+</code></pre>
 
-<p>if @question.answers.count &gt;0  #bad
-if @question.answers.count.positive?  #good</p>
+<pre><code class="ruby">@filters_arry = Array.new  #bad
+@filters_arry = [] #good
 
-<p>if @question.answers.count == 0  #bad
+if @question.answers.count &gt;0  #bad
+if @question.answers.count.positive?  #good
+
+
+if @question.answers.count == 0  #bad
 if @question.answers.count.zero?  #good
-```</p>
+</code></pre>
 
-<h2 id="scope-">scope 的用法</h2>
+<h2>scope 的用法</h2>
 
-<blockquote>
-  <p>给一个ActiveRecord::关系对象，添加一个类方法用于检索和查询对象,如果它返回nil或假,者返回的所有范围。</p>
-</blockquote>
+<blockquote><p>给一个ActiveRecord::关系对象，添加一个类方法用于检索和查询对象,如果它返回nil或假,者返回的所有范围。</p></blockquote>
 
-<p>```ruby
-#简单的方式
+<pre><code class="ruby">#简单的方式
 class Post &lt; ActiveRecord::Base
-  scope :is_active, {where(status: ‘active’)}
-  scope :has_content, {joins(:comment).where(“comments.content is not null”)}
-end</p>
+  scope :is_active, {where(status: 'active')}
+  scope :has_content, {joins(:comment).where("comments.content is not null")}
+end
 
-<h1 id="section-1">带参数</h1>
-<p>class Shirt &lt; ActiveRecord::Base
+#带参数
+class Shirt &lt; ActiveRecord::Base
    scope :colored, lambda { |color| where(:color =&gt; color) }       #旧写法
    scope :colored, -&gt;(color) { where(:color =&gt; color) }                #新写法
  end
-```</p>
+</code></pre>
 
-<h3 id="lambda">当我们传入的参数如果是一个变化的量时，要使用lambda.一个是在类初次加载时生效；一个是在被调用时才生效。</h3>
+<h3>当我们传入的参数如果是一个变化的量时，要使用lambda.一个是在类初次加载时生效；一个是在被调用时才生效。</h3>
 
                 </section>
             </article>
