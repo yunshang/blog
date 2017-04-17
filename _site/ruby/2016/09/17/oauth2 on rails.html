@@ -29,71 +29,63 @@
                     <h2 class="headline">17 Sep 2016</h2>
                 </header>
                 <section id="post-body">
-                    <blockquote><p>OAuth2是一个关于授权（authorization）的开放网络标准。</p></blockquote>
+                    <blockquote>
+<p>OAuth2是一个关于授权（authorization）的开放网络标准。</p>
+</blockquote>
 
-<h3>Oauth身份验证过程身份认证的服务平台,和一个客服端程序做为用户认证。Rails通常使用devise, doorkeeper and omniauth-oauth2 gems构建Oauth应用。</h3>
+<h3 id="oauth身份验证过程身份认证的服务平台-和一个客服端程序做为用户认证。rails通常使用devise-doorkeeper-and-omniauth-oauth2-gems构建oauth应用。">Oauth身份验证过程身份认证的服务平台,和一个客服端程序做为用户认证。Rails通常使用devise, doorkeeper and omniauth-oauth2 gems构建Oauth应用。</h3>
 
-<h2>The server application</h2>
+<h2 id="the-server-application">The server application</h2>
 
-<h3>Devise gem将会提供身份验证, doorkeeper gem 将允许应用做为一个Oauth2 server。</h3>
+<h3 id="devise-gem将会提供身份验证-doorkeeper-gem-将允许应用做为一个oauth2-server。">Devise gem将会提供身份验证, doorkeeper gem 将允许应用做为一个Oauth2 server。</h3>
 
-<h3>添加 devise and doorkeeper gems 到Gemfile</h3>
+<h3 id="添加-devise-and-doorkeeper-gems-到gemfile">添加 devise and doorkeeper gems 到Gemfile</h3>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">gem</span> <span class="s2">&quot;devise&quot;</span>
+<span class="n">gem</span> <span class="s2">&quot;doorkeeper&quot;</span>
+</code></pre></div>
+<h3 id="生成这gem的引用和迁移文件。">生成这gem的引用和迁移文件。</h3>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">rails</span> <span class="n">g</span> <span class="ss">devise</span><span class="p">:</span><span class="n">install</span>
+<span class="n">rails</span> <span class="n">g</span> <span class="n">devise</span> <span class="no">User</span>
 
-<pre><code class="ruby">gem "devise"
-gem "doorkeeper"
-</code></pre>
+<span class="n">rails</span> <span class="n">g</span> <span class="ss">doorkeeper</span><span class="p">:</span><span class="n">install</span>
+<span class="n">rails</span> <span class="n">generate</span> <span class="ss">doorkeeper</span><span class="p">:</span><span class="n">migration</span>
 
-<h3>生成这gem的引用和迁移文件。</h3>
+<span class="n">rake</span> <span class="ss">db</span><span class="p">:</span><span class="n">migrate</span>
+</code></pre></div>
+<h3 id="这过程会有很多文件生成-配置doorkeeper-rb文件-修改doorkeeper的初始化，让它使用devise作为认证。">这过程会有很多文件生成,配置doorkeeper.rb文件,修改doorkeeper的初始化，让它使用devise作为认证。</h3>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">resource_owner_authenticator</span> <span class="k">do</span>
+  <span class="n">current_user</span> <span class="o">||</span> <span class="k">begin</span>
+    <span class="n">session</span><span class="o">[</span><span class="ss">:user_return_to</span><span class="o">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">fullpath</span>
+    <span class="n">redirect_to</span> <span class="n">new_user_session_url</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-<pre><code class="ruby">rails g devise:install
-rails g devise User
+<span class="n">admin_authenticator</span> <span class="k">do</span>
+  <span class="n">current_user</span> <span class="o">||</span> <span class="n">redirect_to</span><span class="p">(</span><span class="n">new_user_session_url</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
+<h3 id="the-resource_owner_authenticator这代码块的意思-允许-devise-认证的用户可以访问doorkeeper的资源。假如用户没有通过认证-就存储url-跳转到登录页面。the-admin_authenticator-bock-做为访问用户限制。它用来管理客服端应用程序的所需令牌身份验证的限制。">The resource_owner_authenticator这代码块的意思:允许 devise 认证的用户可以访问doorkeeper的资源。假如用户没有通过认证,就存储url,跳转到登录页面。The admin_authenticator bock 做为访问用户限制。它用来管理客服端应用程序的所需令牌身份验证的限制。</h3>
 
-rails g doorkeeper:install
-rails generate doorkeeper:migration
+<h3 id="创建控制器，为客服端提供认证用户的信息。">创建控制器，为客服端提供认证用户的信息。</h3>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">before_action</span> <span class="ss">:doorkeeper_authorize!</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="ss">:me</span>
 
-rake db:migrate
-</code></pre>
+  <span class="k">def</span> <span class="nf">me</span>
+    <span class="n">render</span> <span class="ss">json</span><span class="p">:</span> <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">doorkeeper_token</span><span class="o">.</span><span class="n">resource_owner_id</span><span class="p">)</span><span class="o">.</span><span class="n">as_json</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<h3 id="doorkeeper_authorize-检测请求oauth的授权码是否正确-如果错误将渲染401-unauthorized的请求头。">doorkeeper_authorize! 检测请求oauth的授权码是否正确,如果错误将渲染401 Unauthorized的请求头。</h3>
 
-<h3>这过程会有很多文件生成,配置doorkeeper.rb文件,修改doorkeeper的初始化，让它使用devise作为认证。</h3>
+<h3 id="不能忘记更新路由">不能忘记更新路由</h3>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
+  <span class="n">use_doorkeeper</span>
+  <span class="n">devise_for</span> <span class="ss">:users</span>
 
-<pre><code class="ruby">resource_owner_authenticator do
-  current_user || begin
-    session[:user_return_to] = request.fullpath
-    redirect_to new_user_session_url
-  end
-end
-
-admin_authenticator do
-  current_user || redirect_to(new_user_session_url)
-end
-</code></pre>
-
-<h3>The resource_owner_authenticator这代码块的意思:允许 devise 认证的用户可以访问doorkeeper的资源。假如用户没有通过认证,就存储url,跳转到登录页面。The admin_authenticator bock 做为访问用户限制。它用来管理客服端应用程序的所需令牌身份验证的限制。</h3>
-
-<h3>创建控制器，为客服端提供认证用户的信息。</h3>
-
-<pre><code class="ruby">class ApplicationController &lt; ActionController::Base
-  before_action :doorkeeper_authorize!, only: :me
-
-  def me
-    render json: User.find(doorkeeper_token.resource_owner_id).as_json
-  end
-end
-</code></pre>
-
-<h3>doorkeeper_authorize! 检测请求oauth的授权码是否正确,如果错误将渲染401 Unauthorized的请求头。</h3>
-
-<h3>不能忘记更新路由</h3>
-
-<pre><code class="ruby">Rails.application.routes.draw do
-  use_doorkeeper
-  devise_for :users
-
-  get '/me' =&gt; 'application#me'
-end
-</code></pre>
-
-<h3>客服端应用需要被注册，在 server application平台上。访问http://localhost:3000/oauth/applications/new，注册新应用。你将会跳转到一个认证页面，按照规定要求填写信息后，将会被返回client_id,secret信息。</h3>
+  <span class="n">get</span> <span class="s1">&#39;/me&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;application#me&#39;</span>
+<span class="k">end</span>
+</code></pre></div>
+<h3 id="客服端应用需要被注册，在-server-application平台上。访问http-localhost-3000-oauth-applications-new，注册新应用。你将会跳转到一个认证页面，按照规定要求填写信息后，将会被返回client_id-secret信息。">客服端应用需要被注册，在 server application平台上。访问<a href="http://localhost:3000/oauth/applications/new%EF%BC%8C%E6%B3%A8%E5%86%8C%E6%96%B0%E5%BA%94%E7%94%A8%E3%80%82%E4%BD%A0%E5%B0%86%E4%BC%9A%E8%B7%B3%E8%BD%AC%E5%88%B0%E4%B8%80%E4%B8%AA%E8%AE%A4%E8%AF%81%E9%A1%B5%E9%9D%A2%EF%BC%8C%E6%8C%89%E7%85%A7%E8%A7%84%E5%AE%9A%E8%A6%81%E6%B1%82%E5%A1%AB%E5%86%99%E4%BF%A1%E6%81%AF%E5%90%8E%EF%BC%8C%E5%B0%86%E4%BC%9A%E8%A2%AB%E8%BF%94%E5%9B%9Eclient_id,secret%E4%BF%A1%E6%81%AF%E3%80%82">http://localhost:3000/oauth/applications/new，注册新应用。你将会跳转到一个认证页面，按照规定要求填写信息后，将会被返回client_id,secret信息。</a></h3>
 
                 </section>
             </article>

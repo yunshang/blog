@@ -29,54 +29,45 @@
                     <h2 class="headline">12 Nov 2016</h2>
                 </header>
                 <section id="post-body">
-                    <h2>import</h2>
+                    <h2 id="import">import</h2>
 
-<blockquote><p>写Go代码的时候经常用到import这个命令用来导入包文件，而我们经常看到的方式参考如下：</p></blockquote>
-
-<pre><code class="go">import(
-    "fmt"
-)
-</code></pre>
-
-<h3>Go的import加载模块方式</h3>
+<blockquote>
+<p>写Go代码的时候经常用到import这个命令用来导入包文件，而我们经常看到的方式参考如下：</p>
+</blockquote>
+<div class="highlight"><pre><code class="language-go" data-lang="go"><span class="kn">import</span><span class="p">(</span>
+    <span class="s">&quot;fmt&quot;</span>
+<span class="p">)</span>
+</code></pre></div>
+<h3 id="go的import加载模块方式">Go的import加载模块方式</h3>
 
 <ul>
-<li><p>相对路径
+<li><p>相对路径<br>
 import “./model” //当前文件同一目录的model目录，但是不建议这种方式来import</p></li>
-<li><p>绝对路径
+<li><p>绝对路径<br>
 import “shorturl/model” //加载gopath/src/shorturl/model模块</p></li>
 <li><p>点操作</p></li>
 </ul>
-
-
-<pre><code class="go">import(
-   ."fmt"
-)
-</code></pre>
-
-<p>这个点操作的含义就是这个包导入之后在你调用这个包的函数时，你可以省略前缀的包名，也就是前面你调用的fmt.Println("hello world")可以省略的写成Println("hello world")</p>
+<div class="highlight"><pre><code class="language-go" data-lang="go"><span class="kn">import</span><span class="p">(</span>
+   <span class="p">.</span><span class="s">&quot;fmt&quot;</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>这个点操作的含义就是这个包导入之后在你调用这个包的函数时，你可以省略前缀的包名，也就是前面你调用的fmt.Println(&quot;hello world&quot;)可以省略的写成Println(&quot;hello world&quot;)</p>
 
 <ul>
 <li>别名操作</li>
 </ul>
-
-
-<pre><code class="go">import(
-    f "fmt"
-)
-</code></pre>
-
+<div class="highlight"><pre><code class="language-go" data-lang="go"><span class="kn">import</span><span class="p">(</span>
+    <span class="nx">f</span> <span class="s">&quot;fmt&quot;</span>
+<span class="p">)</span>
+</code></pre></div>
 <ul>
 <li>_操作</li>
 </ul>
-
-
-<pre><code class="go">import (
-    "database/sql"
-    _ "github.com/ziutek/mymysql/godrv"
-)
-</code></pre>
-
+<div class="highlight"><pre><code class="language-go" data-lang="go"><span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&quot;database/sql&quot;</span>
+    <span class="nx">_</span> <span class="s">&quot;github.com/ziutek/mymysql/godrv&quot;</span>
+<span class="p">)</span>
+</code></pre></div>
 <p>_操作其实是引入该包，而不直接使用包里面的函数，而是调用了该包里面的init函数。</p>
 
                 </section>
