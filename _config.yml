@@ -1,5 +1,9 @@
 title: "alshin"
+gems: [jekyll-paginate]
 markdown: kramdown
 highlighter: pygments
 github_username: yunshang
+paginate: 10
+paginate_path: "page:num"
 baseurl: http://alshin.xyz
+# baseurl: /blog
