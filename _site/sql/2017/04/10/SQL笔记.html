@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="/blog/assets/css/highlight.css">
     <link rel="stylesheet" href="/blog/assets/css/custom.css">
 
-    <link rel="canonical" href="/blog/sql/2017/04/10/SQL%E7%AC%94%E8%AE%B0.html">
+    <link rel="canonical" href="http://localhost:4000/blog/sql/2017/04/10/SQL%E7%AC%94%E8%AE%B0.html">
     <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_1259096643'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1259096643' type='text/javascript'%3E%3C/script%3E"));</script>
 </head>
 
@@ -33,7 +33,7 @@
   <p>SQL连接可以分为内连接、外连接、交叉连接。</p>
 </blockquote>
 
-<h2 id="section">内连接</h2>
+<h2 id="内连接">内连接</h2>
 
 <ul>
   <li>
@@ -47,46 +47,41 @@
   </li>
 </ul>
 
-<p><code>ruby
-   select * from book as a,stu as b where a.sutid = b.stuid select * from book as a inner join stu as b on a.sutid = b.stuid
-</code>
-## 外连接</p>
+<pre><code class="language-ruby">   select * from book as a,stu as b where a.sutid = b.stuid select * from book as a inner join stu as b on a.sutid = b.stuid
+</code></pre>
+<h2 id="外连接">外连接</h2>
 
 <ul>
   <li>左连接：是以左表为基准，将a.stuid = b.stuid的数据进行连接，然后将左表没有的对应项显示，右表的列为NULL</li>
 </ul>
 
-<p><code>ruby
-   select * from book as a left join stu as b on a.sutid = b.stuid
-</code></p>
+<pre><code class="language-ruby">   select * from book as a left join stu as b on a.sutid = b.stuid
+</code></pre>
 
 <ul>
   <li>右连接：是以右表为基准，将a.stuid = b.stuid的数据进行连接，然以将右表没有的对应项显示，左表的列为NULL</li>
 </ul>
 
-<p><code>ruby
-   select * from book as a right join stu as b on a.sutid = b.stuid
-</code></p>
+<pre><code class="language-ruby">   select * from book as a right join stu as b on a.sutid = b.stuid
+</code></pre>
 
 <ul>
   <li>全连接：完整外部联接返回左表和右表中的所有行。当某行在另一个表中没有匹配行时，则另一个表的选择列表列包含空值。如果表之间有匹配行，则整个结果集行包含基表的数据值。</li>
 </ul>
 
-<p><code>ruby
-select * from book as a full outer join stu as b on a.sutid = b.stuid
-</code></p>
+<pre><code class="language-ruby">select * from book as a full outer join stu as b on a.sutid = b.stuid
+</code></pre>
 
-<h2 id="section-1">交叉连接</h2>
+<h2 id="交叉连接">交叉连接</h2>
 
 <ul>
   <li>交叉连接：交叉联接返回左表中的所有行，左表中的每一行与右表中的所有行组合。交叉联接也称作笛卡尔积。</li>
 </ul>
 
-<p><code>ruby
-select * from book as a cross join stu as b order by a.id
-</code></p>
+<pre><code class="language-ruby">select * from book as a cross join stu as b order by a.id
+</code></pre>
 
-<h2 id="section-2">子查询</h2>
+<h2 id="子查询">子查询</h2>
 
 <blockquote>
   <p>子查询（Sub Query）或者说内查询（Inner Query），也可以称作嵌套查询（Nested Query），是一种嵌套在其他 SQL 查询的 WHERE 子句中的查询。</p>
@@ -96,42 +91,37 @@ select * from book as a cross join stu as b order by a.id
   <li>单行子查询</li>
 </ul>
 
-<p><code>ruby
- select ename,deptno,sal from emp where deptno=(select deptno from dept where loc='NEW YORK')；
-</code></p>
+<pre><code class="language-ruby"> select ename,deptno,sal from emp where deptno=(select deptno from dept where loc='NEW YORK')；
+</code></pre>
 
 <ul>
   <li>多行子查询</li>
 </ul>
 
-<p><code>ruby
- select ename,job,sal FROM EMP WHERE deptno in ( SELECT deptno FROM dept WHERE dname LIKE 'A%')；
-</code></p>
+<pre><code class="language-ruby"> select ename,job,sal FROM EMP WHERE deptno in ( SELECT deptno FROM dept WHERE dname LIKE 'A%')；
+</code></pre>
 
 <ul>
   <li>多列子查询</li>
 </ul>
 
-<p><code>ruby
- SELECT deptno,ename,job,sal FROM EMP WHERE (deptno,sal) IN (SELECT deptno,MAX(sal) FROM EMP GROUP BY deptno)；
-</code></p>
+<pre><code class="language-ruby"> SELECT deptno,ename,job,sal FROM EMP WHERE (deptno,sal) IN (SELECT deptno,MAX(sal) FROM EMP GROUP BY deptno)；
+</code></pre>
 
 <ul>
   <li>内联视图子查询</li>
 </ul>
 
-<p><code>ruby
- SELECT ename,job,sal,rownum FROM (SELECT ename,job,sal FROM EMP ORDER BY sal)；
+<pre><code class="language-ruby"> SELECT ename,job,sal,rownum FROM (SELECT ename,job,sal FROM EMP ORDER BY sal)；
  SELECT ename,job,sal,rownum FROM ( SELECT ename,job,sal FROM EMP ORDER BY sal) WHERE rownum&lt;=5；
-</code></p>
+</code></pre>
 
 <ul>
   <li>在HAVING子句中使用子查询</li>
 </ul>
 
-<p><code>ruby
-  SELECT deptno,job,AVG(sal) FROM EMP GROUP BY deptno,job HAVING AVG(sal)&gt;(SELECT sal FROM EMP WHERE ename='MARTIN')；
-</code></p>
+<pre><code class="language-ruby">  SELECT deptno,job,AVG(sal) FROM EMP GROUP BY deptno,job HAVING AVG(sal)&gt;(SELECT sal FROM EMP WHERE ename='MARTIN')；
+</code></pre>
 
                 </section>
             </article>

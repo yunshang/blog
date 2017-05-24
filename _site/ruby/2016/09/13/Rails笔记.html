@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="/blog/assets/css/highlight.css">
     <link rel="stylesheet" href="/blog/assets/css/custom.css">
 
-    <link rel="canonical" href="/blog/ruby/2016/09/13/Rails%E7%AC%94%E8%AE%B0.html">
+    <link rel="canonical" href="http://localhost:4000/blog/ruby/2016/09/13/Rails%E7%AC%94%E8%AE%B0.html">
     <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_1259096643'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1259096643' type='text/javascript'%3E%3C/script%3E"));</script>
 </head>
 
@@ -29,58 +29,57 @@
                     <h2 class="headline">13 Sep 2016</h2>
                 </header>
                 <section id="post-body">
-                    <h2 id="section">简洁代码</h2>
+                    <h2 id="简洁代码">简洁代码</h2>
 
 <blockquote>
   <p>臃肿的写法</p>
 </blockquote>
 
-<p><code>ruby
-flag = false
+<pre><code class="language-ruby">flag = false
 if request.referer.present?
   if request.referer.include?("/users/sign_in") || request.referer.include?("/users/sign_up")
     flag = true
   end
 end
-</code> 
-&gt; 简洁写法</p>
+</code></pre>
+<blockquote>
+  <p>简洁写法</p>
+</blockquote>
 
-<p><code>ruby
- flag = request.referer &amp;&amp; ["/users/sign_in", "/users/sign_up"].include?(request.referer)
-</code></p>
+<pre><code class="language-ruby"> flag = request.referer &amp;&amp; ["/users/sign_in", "/users/sign_up"].include?(request.referer)
+</code></pre>
 
-<p>```ruby
-@filters_arry = Array.new  #bad
-@filters_arry = [] #good</p>
+<pre><code class="language-ruby">@filters_arry = Array.new  #bad
+@filters_arry = [] #good
 
-<p>if @question.answers.count &gt;0  #bad
-if @question.answers.count.positive?  #good</p>
+if @question.answers.count &gt;0  #bad
+if @question.answers.count.positive?  #good
 
-<p>if @question.answers.count == 0  #bad
+
+if @question.answers.count == 0  #bad
 if @question.answers.count.zero?  #good
-```</p>
+</code></pre>
 
-<h2 id="scope-">scope 的用法</h2>
+<h2 id="scope-的用法">scope 的用法</h2>
 
 <blockquote>
   <p>给一个ActiveRecord::关系对象，添加一个类方法用于检索和查询对象,如果它返回nil或假,者返回的所有范围。</p>
 </blockquote>
 
-<p>```ruby
-#简单的方式
+<pre><code class="language-ruby">#简单的方式
 class Post &lt; ActiveRecord::Base
-  scope :is_active, {where(status: ‘active’)}
-  scope :has_content, {joins(:comment).where(“comments.content is not null”)}
-end</p>
+  scope :is_active, {where(status: 'active')}
+  scope :has_content, {joins(:comment).where("comments.content is not null")}
+end
 
-<h1 id="section-1">带参数</h1>
-<p>class Shirt &lt; ActiveRecord::Base
+#带参数
+class Shirt &lt; ActiveRecord::Base
    scope :colored, lambda { |color| where(:color =&gt; color) }       #旧写法
    scope :colored, -&gt;(color) { where(:color =&gt; color) }                #新写法
  end
-```</p>
+</code></pre>
 
-<h3 id="lambda">当我们传入的参数如果是一个变化的量时，要使用lambda.一个是在类初次加载时生效；一个是在被调用时才生效。</h3>
+<h3 id="当我们传入的参数如果是一个变化的量时要使用lambda一个是在类初次加载时生效一个是在被调用时才生效">当我们传入的参数如果是一个变化的量时，要使用lambda.一个是在类初次加载时生效；一个是在被调用时才生效。</h3>
 
                 </section>
             </article>

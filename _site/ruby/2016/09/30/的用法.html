@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="/blog/assets/css/highlight.css">
     <link rel="stylesheet" href="/blog/assets/css/custom.css">
 
-    <link rel="canonical" href="/blog/ruby/2016/09/30/%25%E7%9A%84%E7%94%A8%E6%B3%95.html">
+    <link rel="canonical" href="http://localhost:4000/blog/ruby/2016/09/30/%E7%9A%84%E7%94%A8%E6%B3%95.html">
     <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_1259096643'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1259096643' type='text/javascript'%3E%3C/script%3E"));</script>
 </head>
 
@@ -33,107 +33,97 @@
   <p>%Q</p>
 </blockquote>
 
-<h3 id="section">用于替代双引号的字符串. 当你需要在字符串里放入很多引号时候, 可以直接用下面方法而不需要在引号前逐个添加反斜杠 (\“)</h3>
+<h3 id="用于替代双引号的字符串-当你需要在字符串里放入很多引号时候-可以直接用下面方法而不需要在引号前逐个添加反斜杠-">用于替代双引号的字符串. 当你需要在字符串里放入很多引号时候, 可以直接用下面方法而不需要在引号前逐个添加反斜杠 (\“)</h3>
 
-<p><code>ruby
-&gt;&gt; %Q(Joe said: "Frank said: "#{what_frank_said}"")
+<pre><code class="language-ruby">&gt;&gt; %Q(Joe said: "Frank said: "#{what_frank_said}"")
 =&gt; "Joe said: "Frank said: "Hello!"""
-</code></p>
+</code></pre>
 
-<h3 id="q">%Q(…)，这个括号可以被非数字字母的符号或成对的符号代替。</h3>
+<h3 id="q这个括号可以被非数字字母的符号或成对的符号代替">%Q(…)，这个括号可以被非数字字母的符号或成对的符号代替。</h3>
 
-<p><code>ruby
-&gt;&gt; %Q(Joe said: "Frank said: "#{what_frank_said}"")
+<pre><code class="language-ruby">&gt;&gt; %Q(Joe said: "Frank said: "#{what_frank_said}"")
 =&gt; "Joe said: "Frank said: "Hello!"""
-</code></p>
+</code></pre>
 
-<h3 id="section-1">你还可以这样</h3>
+<h3 id="你还可以这样">你还可以这样</h3>
 
-<p><code>ruby
-&gt;&gt; %/Joe said: "Frank said: "#{what_frank_said}""/
+<pre><code class="language-ruby">&gt;&gt; %/Joe said: "Frank said: "#{what_frank_said}""/
 =&gt; "Joe said: "Frank said: "Hello!"""
-</code></p>
+</code></pre>
 
 <blockquote>
   <p>%q</p>
 </blockquote>
 
-<h3 id="q-">它的语法很像%Q, 用于单引号字符串。但使用单引号不受表达式替换，转义序列影响。</h3>
+<h3 id="它的语法很像q-用于单引号字符串但使用单引号不受表达式替换转义序列影响">它的语法很像%Q, 用于单引号字符串。但使用单引号不受表达式替换，转义序列影响。</h3>
 
-<p><code>ruby
-&gt;&gt; %q(Joe said: 'Frank said: '#{what_frank_said} ' ')
+<pre><code class="language-ruby">&gt;&gt; %q(Joe said: 'Frank said: '#{what_frank_said} ' ')
 =&gt; "Joe said: 'Frank said: '\#{what_frank_said} ' '"
-</code></p>
+</code></pre>
 
 <blockquote>
   <p>%W</p>
 </blockquote>
 
-<h3 id="q-1">别使用与数组里面的双引号。用法和%Q类似。</h3>
+<h3 id="别使用与数组里面的双引号用法和q类似">别使用与数组里面的双引号。用法和%Q类似。</h3>
 
-<p><code>ruby
-&gt;&gt; %W(#{foo} Bar Bar\ with\ space)
+<pre><code class="language-ruby">&gt;&gt; %W(#{foo} Bar Bar\ with\ space)
 =&gt; ["Foo", "Bar", "Bar with space"]
-</code></p>
+</code></pre>
 
 <blockquote>
   <p>%w</p>
 </blockquote>
 
-<h3 id="section-2">用于表示其中元素被单引号括起的数组。</h3>
+<h3 id="用于表示其中元素被单引号括起的数组">用于表示其中元素被单引号括起的数组。</h3>
 
-<p><code>ruby
-&gt;&gt; %w(#{foo} Bar Bar\ with\ space)
+<pre><code class="language-ruby">&gt;&gt; %w(#{foo} Bar Bar\ with\ space)
 =&gt; ["\#{foo}", "Bar", "Bar with space"]
-</code></p>
+</code></pre>
 
 <blockquote>
   <p>%x</p>
 </blockquote>
 
-<h3 id="shell">使用`方法执行一段shell脚本并返回标准输出内容。</h3>
+<h3 id="使用方法执行一段shell脚本并返回标准输出内容">使用`方法执行一段shell脚本并返回标准输出内容。</h3>
 
-<p><code>ruby
-&gt;&gt; %x(echo foo:#{foo})
+<pre><code class="language-ruby">&gt;&gt; %x(echo foo:#{foo})
 =&gt; "foo:Foo\n"  
-</code></p>
+</code></pre>
 
 <blockquote>
   <p>%r</p>
 </blockquote>
 
-<h3 id="q--1">语法近似于%Q, 用于正则表达式.</h3>
+<h3 id="语法近似于q-用于正则表达式">语法近似于%Q, 用于正则表达式.</h3>
 
-<p><code>ruby
-&gt;&gt; %r(/home/#{foo})
+<pre><code class="language-ruby">&gt;&gt; %r(/home/#{foo})
  =&gt; "/\\/home\\/Foo/"   
-</code></p>
+</code></pre>
 
 <blockquote>
   <p>%s</p>
 </blockquote>
 
-<h3 id="symbol-">用于表示symbol, 但是不会对其中表达式等内容进行转化。</h3>
+<h3 id="用于表示symbol-但是不会对其中表达式等内容进行转化">用于表示symbol, 但是不会对其中表达式等内容进行转化。</h3>
 
-<p><code>ruby
-&gt;&gt; %s(foo)
+<pre><code class="language-ruby">&gt;&gt; %s(foo)
 =&gt; :foo
 &gt;&gt; %s(foo bar)
 =&gt; :"foo bar"
 &gt;&gt; %s(#{foo} bar)
 =&gt; :"\#{foo} bar"
-</code></p>
+</code></pre>
 
 <blockquote>
   <p>%i</p>
 </blockquote>
 
-<h3 id="ruby-20--symbol">Ruby 2.0 之后引入的语法, 用于生成一个symbol数组</h3>
+<h3 id="ruby-20-之后引入的语法-用于生成一个symbol数组">Ruby 2.0 之后引入的语法, 用于生成一个symbol数组</h3>
 
-<p><code>ruby
-2.0.0p247 :014 &gt; %i(a b c)
+<pre><code class="language-ruby">2.0.0p247 :014 &gt; %i(a b c)
 =&gt; [:a, :b, :c] 
-</code></p>
+</code></pre>
 
                 </section>
             </article>

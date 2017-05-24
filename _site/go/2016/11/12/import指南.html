@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="/blog/assets/css/highlight.css">
     <link rel="stylesheet" href="/blog/assets/css/custom.css">
 
-    <link rel="canonical" href="/blog/go/2016/11/12/import%E6%8C%87%E5%8D%97.html">
+    <link rel="canonical" href="http://localhost:4000/blog/go/2016/11/12/import%E6%8C%87%E5%8D%97.html">
     <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_1259096643'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1259096643' type='text/javascript'%3E%3C/script%3E"));</script>
 </head>
 
@@ -35,13 +35,12 @@
   <p>写Go代码的时候经常用到import这个命令用来导入包文件，而我们经常看到的方式参考如下：</p>
 </blockquote>
 
-<p><code>go
-import(
+<pre><code class="language-go">import(
     "fmt"
 )
-</code></p>
+</code></pre>
 
-<h3 id="goimport">Go的import加载模块方式</h3>
+<h3 id="go的import加载模块方式">Go的import加载模块方式</h3>
 
 <ul>
   <li>
@@ -57,11 +56,10 @@ import “shorturl/model” //加载gopath/src/shorturl/model模块</p>
   </li>
 </ul>
 
-<p><code>go
-import(
+<pre><code class="language-go">import(
    ."fmt"
 )
-</code></p>
+</code></pre>
 
 <p>这个点操作的含义就是这个包导入之后在你调用这个包的函数时，你可以省略前缀的包名，也就是前面你调用的fmt.Println(“hello world”)可以省略的写成Println(“hello world”)</p>
 
@@ -69,23 +67,21 @@ import(
   <li>别名操作</li>
 </ul>
 
-<p><code>go
-import(
+<pre><code class="language-go">import(
     f "fmt"
 )
-</code></p>
+</code></pre>
 
 <ul>
   <li>_操作</li>
 </ul>
 
-<p><code>go
-import (
+<pre><code class="language-go">import (
     "database/sql"
     _ "github.com/ziutek/mymysql/godrv"
 )
-</code>
-_操作其实是引入该包，而不直接使用包里面的函数，而是调用了该包里面的init函数。</p>
+</code></pre>
+<p>_操作其实是引入该包，而不直接使用包里面的函数，而是调用了该包里面的init函数。</p>
 
                 </section>
             </article>

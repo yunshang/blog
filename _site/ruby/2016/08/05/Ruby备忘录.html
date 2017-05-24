@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="/blog/assets/css/highlight.css">
     <link rel="stylesheet" href="/blog/assets/css/custom.css">
 
-    <link rel="canonical" href="/blog/ruby/2016/08/05/Ruby%E5%A4%87%E5%BF%98%E5%BD%95.html">
+    <link rel="canonical" href="http://localhost:4000/blog/ruby/2016/08/05/Ruby%E5%A4%87%E5%BF%98%E5%BD%95.html">
     <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_1259096643'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1259096643' type='text/javascript'%3E%3C/script%3E"));</script>
 </head>
 
@@ -29,128 +29,122 @@
                     <h2 class="headline">05 Aug 2016</h2>
                 </header>
                 <section id="post-body">
-                    <h2 id="attraccessorcattraccessor">attr_accessor与cattr_accessor</h2>
+                    <h2 id="attr_accessor与cattr_accessor">attr_accessor与cattr_accessor</h2>
 
 <blockquote>
   <p>attr_accessor 和帮你在 Ruby 的类別里产生一对getter以及setter方法。</p>
 </blockquote>
 
-<p>```ruby
-class Person
+<pre><code class="language-ruby">class Person
   def name
     @name # simply returning an instance variable @name
   end
-end</p>
+end
 
-<p>person = Person.new
+person = Person.new
 person.name # =&gt; nil
-person.name = “Dennis” # =&gt; no method error
-```</p>
+person.name = "Dennis" # =&gt; no method error
+</code></pre>
 
-<h3 id="personname-personnamepersonnamedennispersonname">person.name 其实执行的是person.name()这个方法，person.name=”Dennis”是执行的是person.name=()这个方法。</h3>
+<h3 id="personname-其实执行的是personname这个方法personnamedennis是执行的是personname这个方法">person.name 其实执行的是person.name()这个方法，person.name=”Dennis”是执行的是person.name=()这个方法。</h3>
 
-<p>```ruby
-class Person
+<pre><code class="language-ruby">class Person
   attr_accessor :name
-end</p>
+end
 
-<p>person = Person.new
-person.name = “Dennis”
-person.name # =&gt; “Dennis”
-```</p>
+person = Person.new
+person.name = "Dennis"
+person.name # =&gt; "Dennis"
+</code></pre>
 
-<h3 id="attraccessor-personpersonnamepersonname">attr_accessor 给person加上了person.name这个读方法，和person.name=()这个写方法。</h3>
+<h3 id="attr_accessor-给person加上了personname这个读方法和personname这个写方法">attr_accessor 给person加上了person.name这个读方法，和person.name=()这个写方法。</h3>
 
 <blockquote>
   <p>cattr_accessor 类的共享实例</p>
 </blockquote>
 
-<p>```ruby
-class Counter
+<pre><code class="language-ruby">class Counter
   cattr_accessor :class_count
   attr_accessor :instance_count
-end</p>
+end
 
-<p>counter1 = Counter.new
+counter1 = Counter.new
 counter1.instance_count = 1
-counter1.class_count = 1</p>
+counter1.class_count = 1
 
-<p>counter2 = Counter.new
+counter2 = Counter.new
 p counter2.instance_count
 #&gt; nil
 p counter2.class_count
 #&gt; 1
-```</p>
+</code></pre>
 
-<h2 id="section">实例变量</h2>
+<h2 id="实例变量">实例变量</h2>
 
 <blockquote>
   <p>ruby的实例变量以@开头，是指实例化后的对象，才绑定的变量。实例变量属于特定的对象。</p>
 </blockquote>
 
-<p><code>ruby
-class Myclass
+<pre><code class="language-ruby">class Myclass
   def initialize(name,gender,age)
     @name=name
     @gender=gender
     @age=age
   end
 end
-</code></p>
+</code></pre>
 
-<h3 id="name-genderagenil">@name， @gender，@age都是实例变量。可以在类或子类的方法中引用实例变量。若引用尚未被初始化的实例变量的话，其值为nil。只有在类被实例化时，实例变量才产生和存在。但是，实例对象并不能直接访问实例变量。</h3>
+<h3 id="name-genderage都是实例变量可以在类或子类的方法中引用实例变量若引用尚未被初始化的实例变量的话其值为nil只有在类被实例化时实例变量才产生和存在但是实例对象并不能直接访问实例变量">@name， @gender，@age都是实例变量。可以在类或子类的方法中引用实例变量。若引用尚未被初始化的实例变量的话，其值为nil。只有在类被实例化时，实例变量才产生和存在。但是，实例对象并不能直接访问实例变量。</h3>
 
-<h2 id="section-1">类变量</h2>
+<h2 id="类变量">类变量</h2>
 
 <blockquote>
   <p>类变量在类的定义中定义，可以在类的特殊方法、实例方法等处对类变量进行赋值和引用。类变量被类，类的子类和他们的实例对象共享。</p>
 </blockquote>
 
-<p><code>ruby
-class Person
+<pre><code class="language-ruby">class Person
   @@number = 0 #使用前必须有初值
   def initialize(name, gender, age)
     @age = age
     @@number += 1
   end
 end
-</code></p>
+</code></pre>
 
-<h3 id="section-2">类变量是私有的，在类外无法直接访问，你只能通过实例方法和类方法去访问它。可以把类变量看作一种被类、子类以及它们的实例所共享的全局变量。模块中定义的类变量(模块变量)被所有包含该模块的类所共享。</h3>
+<h3 id="类变量是私有的在类外无法直接访问你只能通过实例方法和类方法去访问它可以把类变量看作一种被类子类以及它们的实例所共享的全局变量模块中定义的类变量模块变量被所有包含该模块的类所共享">类变量是私有的，在类外无法直接访问，你只能通过实例方法和类方法去访问它。可以把类变量看作一种被类、子类以及它们的实例所共享的全局变量。模块中定义的类变量(模块变量)被所有包含该模块的类所共享。</h3>
 
-<p>```ruby
+<pre><code class="language-ruby">  class Parent
+  end
+
+  class Child &lt; Parent
+    @@var = 'var in Child'
+    def self.var
+     @@var
+    end
+  end
+
+  class AnotherChild &lt; Parent
+    @@var = 'var in AnotherChild'
+    def self.var
+     @@var
+    end
+  end
+
+  puts Child.var  # =&gt; var in Child
+  puts AnotherChild.var # =&gt; var in AnotherChild
+
   class Parent
-  end</p>
-
-<p>class Child &lt; Parent
-    @@var = ‘var in Child’
+    @@var = 'var in Parent'
     def self.var
      @@var
     end
-  end</p>
+  end
 
-<p>class AnotherChild &lt; Parent
-    @@var = ‘var in AnotherChild’
-    def self.var
-     @@var
-    end
-  end</p>
-
-<p>puts Child.var  # =&gt; var in Child
-  puts AnotherChild.var # =&gt; var in AnotherChild</p>
-
-<p>class Parent
-    @@var = ‘var in Parent’
-    def self.var
-     @@var
-    end
-  end</p>
-
-<p>puts Parent.var # =&gt; var in Parent
+  puts Parent.var # =&gt; var in Parent
   puts Child.var # =&gt; var in Parent
   puts AnotherChild.var # =&gt; var in Parent
-```
-### 如果父类中初始化了类变量的话，所有子类将共享同一个类变量，即使之前各子类都具有不同的类变量定义。</p>
+</code></pre>
+<h3 id="如果父类中初始化了类变量的话所有子类将共享同一个类变量即使之前各子类都具有不同的类变量定义">如果父类中初始化了类变量的话，所有子类将共享同一个类变量，即使之前各子类都具有不同的类变量定义。</h3>
 
                 </section>
             </article>
