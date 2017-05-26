@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>alshin - beego学习</title>
+    <meta name="description" content="">
+
+    <link rel="stylesheet" href="http://alshin.xyz/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="http://alshin.xyz/assets/css/animate.css">
+    <link rel="stylesheet" href="http://alshin.xyz/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://alshin.xyz/assets/css/font.css">
+    <link rel="stylesheet" href="http://alshin.xyz/assets/css/landing.css">
+    <link rel="stylesheet" href="http://alshin.xyz/assets/css/app.css">
+    <link rel="stylesheet" href="http://alshin.xyz/assets/css/highlight.css">
+    <link rel="stylesheet" href="http://alshin.xyz/assets/css/custom.css">
+
+    <link rel="canonical" href="http://alshin.xyz/go/2017/05/26/beego%E5%AD%A6%E4%B9%A0.html">
+    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_1259096643'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1259096643' type='text/javascript'%3E%3C/script%3E"));</script>
+</head>
+
+    <body>
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>beego学习</h1>
+                    <h2 class="headline">26 May 2017</h2>
+                </header>
+                <section id="post-body">
+                    <blockquote>
+  <p>beego 一种MVC架构的web框架，网上评价:设计繁复。优点:简单，国人开人，文档，资料多。</p>
+</blockquote>
+
+<h2 id="orm">orm</h2>
+
+<ul>
+  <li>
+    <p>支持 Go 的所有类型存储</p>
+  </li>
+  <li>
+    <p>轻松上手，采用简单的 CRUD 风格</p>
+  </li>
+  <li>
+    <p>自动 Join 关联表</p>
+  </li>
+  <li>
+    <p>跨数据库兼容查询</p>
+  </li>
+  <li>
+    <p>允许直接使用 SQL 查询／映射</p>
+  </li>
+  <li>
+    <p>严格完整的测试保证 ORM 的稳定与健壮</p>
+  </li>
+</ul>
+
+<pre><code class="language-go">func init() {
+  // 注册数据库
+  orm.RegisterDataBase("default", "mysql", "root:root@/my_db?charset=utf8", 30)
+
+// 创建数据库，第三个参数是是否检测数据库重复，报错
+  orm.RunSyncdb("default", false, true)
+}
+</code></pre>
+
+<h3 id="orm-接口使用httpsbeegomedocsmvcmodelormmd">ORM 接口使用[https://beego.me/docs/mvc/model/orm.md]</h3>
+
+<pre><code class="language-go">  var o Ormer
+  o = orm.NewOrm() // 创建一个 Ormer
+  // NewOrm 的同时会执行 orm.BootStrap (整个 app 只执行一次)，用以验证模型之间的定义并缓存。
+  var r RawSeter
+  r = o.Raw("UPDATE user SET name = ? WHERE name = ?", "testing", "slene")
+  // Raw 函数，返回一个 RawSeter 用以对设置的 sql 语句和参数进行操作
+
+}
+</code></pre>
+
+<h2 id="context-模块httpsbeegomedocsmodulecontextmd">context 模块[https://beego.me/docs/module/context.md]</h2>
+
+<blockquote>
+  <p>上下文模块主要是针对 HTTP 请求中，request 和 response 的进一步封装，他包括用户的输入和输出，用户的输入即为 request，context 模块中提供了 Input 对象进行解析，用户的输出即为 response，context 模块中提供了 Output 对象进行输出。</p>
+</blockquote>
+
+<h2 id="golang-strconv包-httpsgolangorgpkgstrconv">golang strconv包 [https://golang.org/pkg/strconv/]</h2>
+
+<blockquote>
+  <p>strconv实现与基本数据类型的字符串表示形式的转换</p>
+</blockquote>
+
+<pre><code class="language-go">  package main  
+
+  import (  
+      "fmt"  
+      "strconv"  
+  )  
+
+  func main() {  
+      // ParseBool 将字符串转换为布尔值
+      fmt.Println(strconv.ParseBool("1"))    // true  
+      fmt.Println(strconv.ParseBool("TRue"))
+      // false strconv.ParseBool: parsing "TRue": invalid syntax  
+      fmt.Println(strconv.ParseBool("0"))     // false  
+      fmt.Println(strconv.ParseBool("FALse"))  
+      // false strconv.ParseBool: parsing "FAlse": invalid syntax  
+
+      // FormatBool 将布尔值转换为字符串 "true" 或 "false"
+      fmt.Println(strconv.FormatBool(0 &gt; 1)) // false  
+
+      // ParseInt 将字符串转换为 int 类型
+      // Atoi 相当于 ParseInt(s, 10, 0)
+      // 通常使用这个函数，而不使用 ParseIn
+      fmt.Println(strconv.Atoi("2147483647"))  
+      // 2147483647  
+      fmt.Println(strconv.Atoi("2147483648"))  
+      // 2147483647 strconv.ParseInt: parsing "2147483648": value out of range
+
+      // ParseFloat 将字符串转换为浮点数
+      s := "0.12345678901234567890"  
+      f, err := strconv.ParseFloat(s, 32)  
+      fmt.Println(f, err)          // 0.12345679104328156  
+}  
+</code></pre>
+
+<h2 id="casbin-httpsgithubcomcasbincasbin">casbin [https://github.com/casbin/casbin]</h2>
+
+<blockquote>
+  <p>casbin是一个用Go语言打造的轻量级开源访问控制框架，casbin采用了元模型的设计思想，支持多种经典的访问控制方案，如基于角色的访问控制RBAC、基于属性的访问控制ABAC等。</p>
+</blockquote>
+
+<h3 id="casbin的主要特性包括">casbin的主要特性包括</h3>
+
+<ul>
+  <li>支持自定义请求的格式，默认的请求格式为{subject, object, action}；</li>
+  <li>具有访问控制模型model和策略policy两个核心概念；</li>
+  <li>支持RBAC中的多层角色继承，不止主体可以有角色，资源也可以具有角色；</li>
+  <li>支持超级用户，如root或Administrator，超级用户可以不受授权策略的约束访问任意资源；</li>
+  <li>支持多种内置的操作符，如keyMatch，方便对路径式的资源进行管理，如/foo/bar可以映射到/foo*；</li>
+</ul>
+
+<h3 id="casbin不做的事情">casbin不做的事情</h3>
+
+<ul>
+  <li>
+    <p>身份认证authentication（即验证用户的用户名、密码），casbin只负责访问控制。应该有其他专门的组件负责身份认证，然后由casbin进行访问控制，二者是相互配合的关系；</p>
+  </li>
+  <li>
+    <p>管理用户列表或角色列表。casbin认为由项目自身来管理用户、角色列表更为合适，casbin假设所有策略和请求中出现的用户、角色、资源都是合法有效的。</p>
+  </li>
+</ul>
+
+                </section>
+            </article>
+
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+                var disqus_shortname = 'alshin';
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+            <footer id="footer">
+                <div id="social">
+                    <a class="symbol" href="https://github.com/yundshang">
+                      <i class="fa fa-github"></i>
+                    </a>
+                    <a class="symbol" href="https://twitter.com">
+                      <i class="fa fa-twitter"></i>
+                    </a>
+                    <a class="symbol" href="http://weibo.com">
+                      <i class="fa fa-weibo"></i>
+                    </a>
+                </div>
+                <p class="small">
+                    © 版权所有 alshin
+                </p>
+            </footer>
+        </section>
+
+    </body>
+</html>
