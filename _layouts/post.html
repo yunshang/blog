@@ -8,6 +8,9 @@
                     <h1>{{ page.title }}</h1>
                     <h2 class="headline">{{ page.date | date_to_string }}</h2>
                 </header>
+                {% if page.music-id.nil? %}
+                <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=100% height=100% src=//music.163.com/outchain/player?type=2&id={{ page.music-id }}&auto=1&height=66'></iframe>
+                {% endif %}
                 <section id="post-body">
                     {{ content }}
                 </section>
