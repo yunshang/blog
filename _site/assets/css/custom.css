@@ -3,16 +3,21 @@
     width: 99%;
     }*/
 }
-body { font-family: Georgia,'Helvetica Neue', 'Hiragino Sans GB', Helvetica, Arial, Sans-serif;
-    font-size: 18px;
-    line-height: 160%;
-    color: #222;
-    margin: 0px;
-    padding: 0px
+body { 
+  font-family: Helvetica, Sans-Serif;
+  color: #444444;
+  font-size: 9pt;
+  background-color: #FAFAFA;
+  /* font-family: Georgia,'Helvetica Neue', 'Hiragino Sans GB', Helvetica, Arial, Sans-serif; */
+  /* font-size: 18px;                                                                         */
+  /* line-height: 160%;                                                                       */
+  /* color: #222;                                                                             */
+  margin: 0px;
+  padding: 0px
 }
 
 h2,h3,h4,h5,h6 {
-    font-family: 'Helvetica Neue', 'Hiragino Sans GB', Helvetica, Arial, Sans-serif
+    /* font-family: 'Helvetica Neue', 'Hiragino Sans GB', Helvetica, Arial, Sans-serif */
 }
 
 .post-item .post-title a {

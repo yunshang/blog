@@ -4,9 +4,13 @@ html {
 }
 body {
   /* font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; */
-  font-size: 13px;
-  color: #717171;
-  background-color: transparent;
+  /* font-size: 13px; */
+  /* color: #717171;  */
+  font-family: Helvetica, Sans-Serif;
+  color: #444444;
+  font-size: 9pt;
+  background-color: #FAFAFA;
+  /* background-color: transparent; */
   -webkit-font-smoothing: antialiased;
 }
 .h1,
