@@ -6,4 +6,4 @@ github_username: yunshang
 paginate: 10
 paginate_path: "page:num"
 baseurl: http://alshin.xyz
-#baseurl: /blog
+# baseurl: /blog
