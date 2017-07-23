@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>alshin - Docker 入门学习</title>
+    <meta name="description" content="">
+
+    <link rel="stylesheet" href="http://alshin.xyz/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="http://alshin.xyz/assets/css/animate.css">
+    <link rel="stylesheet" href="http://alshin.xyz/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://alshin.xyz/assets/css/font.css">
+    <link rel="stylesheet" href="http://alshin.xyz/assets/css/landing.css">
+    <link rel="stylesheet" href="http://alshin.xyz/assets/css/app.css">
+    <link rel="stylesheet" href="http://alshin.xyz/assets/css/highlight.css">
+    <link rel="stylesheet" href="http://alshin.xyz/assets/css/custom.css">
+
+    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_1262884701'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1262884701' type='text/javascript'%3E%3C/script%3E"));</script>
+</head>
+
+    <body>
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>Docker 入门学习</h1>
+                    <h2 class="headline">23 Jul 2017</h2>
+                </header>
+                <!--                                                                                                                                                                                -->
+                <section id="post-body">
+                    <h3 id="docker-的基本概念">Docker 的基本概念：</h3>
+
+<ul>
+  <li>镜像(Image)</li>
+  <li>容器(Container)</li>
+  <li>仓库(Repository)</li>
+</ul>
+
+<h3 id="用户权限">用户权限</h3>
+
+<pre><code>sudo groupadd docker # 增加 docker 用户组
+sudo gpasswd -a ${USER} docker  # 当前用户加入 docker
+sudo service docker restart # 重启 docker
+</code></pre>
+
+<h3 id="镜像">镜像</h3>
+
+<p>Docker Hub 仓库下载一个 Ubuntu 14.04 操作系统的镜像</p>
+
+<pre><code>docker pull ubuntu:14.04
+docker pull dl.dockerpool.com:5000/ubuntu:12.04 #指定服务器地址
+</code></pre>
+
+<p>列出镜像</p>
+
+<pre><code>docker images
+</code></pre>
+
+<p>通过镜像启动容器</p>
+
+<pre><code>docker run -t -i training/sinatra /bin/bash
+</code></pre>
+
+<p>修改容器，提交更新后的副本</p>
+
+<pre><code>docker commit -m 'Added json gem' -a 'Docker Newbee' 44ced85d1270 andrew/sinatra:v2
+</code></pre>
+<p>-m 用来指定提交的说明信息
+-a 指定更新的用户信息
+44ced85d1270 是容器的 ID
+andrew/sinatra:v2 是仓库名以及 tag 信息</p>
+
+<p>移除镜像</p>
+
+<pre><code>docker rmi training/sinatra
+</code></pre>
+
+<p>清理所有未打标签的镜像</p>
+
+<pre><code>docker rmi $(docker images -q -f "dangling=true")
+# docker rmi $(docker images --quiet --filter "dangling=true" # 完整命令
+</code></pre>
+
+<p>不能连接 https://index.docker.io</p>
+<pre><code>docker-machine restart default      # Restart the environment
+eval $(docker-machine env default)  # Refresh your environment settings
+</code></pre>
+
+<p>利用 Dockerfile 来创建镜像</p>
+
+<h3 id="容器">容器</h3>
+
+<pre><code>docker run -t -i ubuntu:14.04 /bin/bash
+</code></pre>
+<p><code>-t</code>  选项让 Docker 分配一个伪终端(pseudo-tty)并绑定到容器的标准输入 上
+<code>-i</code>   则让容器的标准输入保持打开</p>
+
+<p>当利用 docker run 来创建容器时,Docker 在后台运行的标准操作包括:</p>
+
+<ul>
+  <li>检查本地是否存在指定的镜像,不存在就从公有仓库下载</li>
+  <li>利用镜像创建并启动一个容器 分配一个文件系统,并在只读的镜像层外面挂载一层可读写层</li>
+  <li>从宿主主机配置的网桥接口中桥接一个虚拟接口到容器中去</li>
+  <li>从地址池配置一个 ip 地址给容器</li>
+  <li>执行用户指定的应用程序</li>
+  <li>执行完毕后容器被终止</li>
+</ul>
+
+<pre><code class="language-bash">$ docker run -d ubuntu:14.04 /bin/sh -c "while true; do echo
+</code></pre>
+
+<p>会在后台运行并不会把输出的结果(STDOUT)打印到宿主机上面(输出结果 可以用 <code>docker logs</code> 查看)</p>
+
+<h4 id="进入容器">进入容器</h4>
+
+<p>1 bashrc_docker</p>
+
+<pre><code class="language-bash">wget -P ~ https://github.com/yeasy/docker_practice/raw/master/_local/.bashrc_docker;
+echo "[ -f ~/.bashrc_docker ] &amp;&amp; . ~/.bashrc_docker" &gt;&gt; ~/.bashrc; source ~/.bashrc
+
+docker-enter &lt;容器id&gt;
+</code></pre>
+
+<p>2 nsenter</p>
+
+<pre><code class="language-bash">$ docker inspect -f  b62a42c75ce2
+25234
+
+nsenter --target 25234 --mount --uts --ipc --net --pid
+</code></pre>
+
+<p>3 exec, 这个简单好用</p>
+
+<pre><code class="language-bash">$ docker exec -it 316f9f5ee7c9  /bin/bash
+root@316f9f5ee7c9:/srv/rorapps/rmovie# bash --login
+</code></pre>
+
+<h4 id="导出容器">导出容器</h4>
+
+<p><code>docker export</code> 导出容器快照到本地文件</p>
+
+<pre><code class="language-bash">$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                    PORTS               NAMES
+7691a814370e        ubuntu:14.04        "/bin/bash"         36 hours ago        Exited (0) 21 hours ago                       test
+$ docker export 7691a814370e &gt; ubuntu.tar
+</code></pre>
+
+<h4 id="导入容器">导入容器</h4>
+
+<p>使用 <code>docker import</code> 从容器快照文件中再导入为镜像</p>
+
+<pre><code class="language-bash">$ cat ubuntu.tar | docker import - test/ubuntu:v1.0
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED              VIRTUAL SIZE
+test/ubuntu         v1.0                9d37a6082e97        About a minute ago   171.3 MB
+</code></pre>
+
+<h4 id="清除容器">清除容器</h4>
+
+<p>清理所有处于终止状态的容器</p>
+
+<pre><code class="language-bash">docker rm $(docker ps -a -q)
+</code></pre>
+
+<h4 id="删除容器">删除容器</h4>
+
+<p><code>docker rm</code> 来删除一个处于终止状态的容器</p>
+
+<h3 id="网络配置">网络配置</h3>
+
+<h4 id="网络端口映射">网络端口映射</h4>
+
+<pre><code class="language-bash">docker run -d -p 127.0.0.1::5000 training/webapp python app.py
+</code></pre>
+
+<p>绑定端口 5000 容器动态端口，并且让 localhost 访问</p>
+
+<h3 id="仓库">仓库</h3>
+
+<p>仓库（Repository）是集中存放镜像的地方</p>
+
+<h4 id="登录">登录</h4>
+
+<p>可以通过执行 <code>docker login</code> 命令来输入用户名、密码和邮箱来完成注册和登录。 注册成功后，本地用户目录的 <code>.dockercfg</code> 中将保存用户的认证信息。</p>
+
+<h4 id="基本操作">基本操作</h4>
+
+<pre><code class="language-bash">docker search centos # 搜索镜像
+docker pull centos # 下载官方镜像到本地
+docker push andrewzhyl/rmovie_base:v1  # 上传镜像到公共仓库 Docker Hub
+docker tag IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG] # 标记镜像，复制一份
+</code></pre>
+
+<h2 id="数据管理">数据管理</h2>
+
+<p>容器中管理数据主要有两种方式:</p>
+
+<ul>
+  <li>数据卷（Data volumes）</li>
+  <li>数据卷容器（Data volume containers）</li>
+</ul>
+
+<h3 id="数据卷">数据卷</h3>
+
+<h4 id="删除数据卷">删除数据卷</h4>
+
+<ul>
+  <li>数据卷是被设计用来持久化数据的，它的生命周期独立于容器</li>
+  <li>删除容器的时候使用 <code>docker rm -v</code> 才会删除数据卷，不然不会删除</li>
+  <li>Docker 挂载数据卷的默认权限是读写，用户也可以通过 :ro 指定为只读</li>
+</ul>
+
+<pre><code class="language-bash">$ docker run -d -P --name web -v /src/webapp:/opt/webapp:ro
+training/webapp python app.py
+</code></pre>
+
+<h4 id="挂载一个主机目录作为数据卷">挂载一个主机目录作为数据卷</h4>
+
+<pre><code>docker run -itd -P --name web -v /home/zhangyulong/rmovie_dev/gems:/srv/rorapps/gems rmovie_dev:v1 /bin/bash
+</code></pre>
+<p>挂在主机的 gems 作为 rmovie_dev 的数据卷</p>
+
+<h4 id="查看数据卷的具体信息">查看数据卷的具体信息</h4>
+
+<p>在主机里使用以下命令可以查看指定容器的信息:</p>
+
+<pre><code class="language-bash">docker inspect web
+</code></pre>
+
+<pre><code class="language-json"> "Mounts": [
+            {
+                "Source": "/home/zhangyulong/rmovie_dev/gems",
+                "Destination": "/srv/rorapps/gems",
+                "Mode": "",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ],
+</code></pre>
+
+<h4 id="挂载一个本地主机文件作为数据卷">挂载一个本地主机文件作为数据卷</h4>
+
+<p>-v 标记也可以从主机挂载单个文件到容器中</p>
+
+<pre><code class="language-bash">$docker run --rm -it -v ~/.bash_history:/.bash_history ubuntu /bin/bash
+</code></pre>
+
+<p>这样就可以记录在容器输入过的命令了。</p>
+
+<h3 id="数据卷容器">数据卷容器</h3>
+
+<p>持续更新的数据需要在容器之间共享，最好创建数据卷容器</p>
+
+<p>创建 dbdata 数据卷容器</p>
+
+<pre><code> docker run -d -v /dbdata --name dbdata training/postgres echo Data-only container for postgres
+</code></pre>
+
+<p>使用 –volumes-from 来挂载 dbdata 容器中的数据卷</p>
+
+<pre><code> docker run -d --volumes-from dbdata --name db1 training/postgres
+</code></pre>
+
+<p>然后用 <code>docker inspect db1</code> 查看容器信息</p>
+
+<pre><code>     "Mounts": [
+            {
+                "Name": "04d67060f52ffb5d7604d90f0e453f347dc7b002414a5c3283adf33be9a99d5c",
+                "Source": "/var/lib/docker/volumes/04d67060f52ffb5d7604d90f0e453f347dc7b002414a5c3283adf33be9a99d5c/_data",
+                "Destination": "/dbdata",
+                "Driver": "local",
+                "Mode": "",
+                "RW": true,
+                "Propagation": ""
+            }
+        ],
+</code></pre>
+<p>使用 –volumes-from 参数所挂载数据卷的容器自己并不需要保持在运行状态</p>
+
+<h2 id="使用网络">使用网络</h2>
+
+<p>Docker 允许通过外部访问容器或容器互联的方式来提供网络服务。</p>
+
+<h3 id="外部访问容器">外部访问容器</h3>
+
+<p>使用 -P 标记时，Docker 会随机映射一个 <code>49000~49900</code> 的端口到内部容器开放的网络端口。
+本地主机的 <code>49155</code> 被映射到了容器的 <code>5000</code> 端口。此时访问本机的 <code>49155</code> 端口即可访问容器内  <code>5000</code> 端口</p>
+
+<pre><code class="language-bash">$ docker run -d -P training/webapp python app.py
+$ docker ps -l
+CONTAINER ID  IMAGE                   COMMAND       CREATED        STATUS        PORTS                    NAMES
+bc533791f3f5  training/webapp:latest  python app.py 5 seconds ago  Up 2 seconds  0.0.0.0:49155-&gt;5000/tcp  nostalgic_morse
+</code></pre>
+
+<p>查看日志:</p>
+
+<pre><code class="language-bash">docker logs -f condescending_goldwasser
+</code></pre>
+
+<h4 id="映射所有接口地址">映射所有接口地址</h4>
+
+<p>使用 <code>hostPort:containerPort</code> 格式本地的 5433 端口映射到容器的 5432 端口，可以执行:</p>
+
+<pre><code class="language-bash">docker run -it -p 5433:5432  --name rmovie_db_dev rmovie_db_dev:9.4
+</code></pre>
+
+<h4 id="映射到指定地址的指定端口">映射到指定地址的指定端口</h4>
+
+<p>可以使用 <code>ip:hostPort:containerPort</code>格式指定映射使用一个特定地址，比如 localhost 地址 127.0.0.1:</p>
+
+<pre><code class="language-bash">docker run -it -p 127.0.0.1:5433:5432  --name rmovie_db_dev rmovie_db_dev:9.4
+</code></pre>
+
+<h4 id="映射到指定地址的任意端口">映射到指定地址的任意端口</h4>
+
+<p>使用 ip::containerPort 绑定 localhost 的任意端口到容器的 5000 端口，本地主机会自动分配一个端口。</p>
+
+<pre><code class="language-bash">docker run -it -p 127.0.0.1::5432  --name rmovie_db_dev rmovie_db_dev:9.4
+</code></pre>
+
+<p>还可以使用 udp 标记来指定 udp 端口:</p>
+
+<pre><code class="language-bash">$ docker run -d -p 127.0.0.1:5000:5000/udp training/webapp python app.py
+</code></pre>
+
+<h5 id="查看端口映射">查看端口映射</h5>
+
+<p>docker port 来查看当前映射的端口配置:</p>
+
+<pre><code class="language-bash"> docker port condescending_goldwasser 5432
+0.0.0.0:5433
+</code></pre>
+
+<ul>
+  <li>容器有自己的内部网络和 ip 地址（使用 <code>docker inspect</code> 可以获取所有的变量，Docker 还可以有一个可变的网络配置。）</li>
+  <li><code>-p</code> 标记可以多次使用来绑定多个端口</li>
+</ul>
+
+<h3 id="容器互联">容器互联</h3>
+
+<ul>
+  <li>容器的连接（linking）系统是除了端口映射外，另一种跟容器中应用交互的方式。</li>
+  <li>该系统会在源和接收容器之间创建一个隧道，接收容器可以看到源容器指定的信息。</li>
+</ul>
+
+<h4 id="自定义容器命名">自定义容器命名</h4>
+
+<p><code>--name</code> 标记可以为容器自定义命名:</p>
+
+<pre><code class="language-bash">docker run -itd -p 5433:5432  --name rmovie_db_dev rmovie_db_dev:9.4
+</code></pre>
+
+<p>docker inspect 来查看容器的名字:</p>
+
+<pre><code class="language-bash"> docker inspect -f "" aed84ee21bde
+</code></pre>
+
+<p>创建一个数据容器，通过 -v 制定主机目录挂载到:</p>
+
+<pre><code class="language-bash">docker run  -v /home/zhangyulong/pgdata:/data --name dbdata postgres:9.4 echo "Data-only container for postgres"
+</code></pre>
+
+<ul>
+  <li>容器的名称是唯一的</li>
+  <li>在执行 docker run 的时候如果添加 –rm 标记，则容器在终止后会立刻删除</li>
+  <li>注意，–rm 和 -d 参数不能同时使用。</li>
+</ul>
+
+<h4 id="容器互联-1">容器互联</h4>
+
+<h3 id="常用命令">常用命令</h3>
+
+<pre><code class="language-bash">docker rmi $(docker images -q -f "dangling=true")
+docker rm $(docker ps -a -q)
+</code></pre>
+
+                </section>
+            </article>
+
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+                var disqus_shortname = 'alshin';
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+            <footer id="footer">
+                <div id="social">
+                    <a class="symbol" href="https://github.com/yundshang">
+                      <i class="fa fa-github"></i>
+                    </a>
+                    <a class="symbol" href="https://twitter.com">
+                      <i class="fa fa-twitter"></i>
+                    </a>
+                    <a class="symbol" href="http://weibo.com">
+                      <i class="fa fa-weibo"></i>
+                    </a>
+                </div>
+                <p class="small">
+                    © 版权所有 alshin
+                </p>
+            </footer>
+        </section>
+
+    </body>
+</html>
