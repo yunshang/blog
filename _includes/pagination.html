@@ -2,7 +2,7 @@
   <ul class="pagination pagination-md">
     {% if paginator.previous_page %}
       {% if paginator.page == 2 %}
-        <li><a href="{{ site.baseurl }}/"><i class="fa fa-chevron-left"></i></a></li>
+        <li><a href="{{ site.baseurl }}"><i class="fa fa-chevron-left"></i></a></li>
       {% else %}
         <li><a href="{{ site.baseurl }}page{{paginator.previous_page}}"><i class="fa fa-chevron-left"></i></a></li>
       {% endif %}
