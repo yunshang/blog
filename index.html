@@ -3,7 +3,7 @@ layout: index
 title: 我的Blog
 ---
 
-　{% for post in paginator.posts %}
+　{% for post in site.posts %}
     <li>
         <a href="{{ site.baseurl }}{{ post.url }}"><aside class="dates">{{ post.date | date_to_string }}</aside></a>
         <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }} <h2></h2></a>
