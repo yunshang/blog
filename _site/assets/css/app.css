@@ -13,6 +13,9 @@ body {
   /* background-color: transparent; */
   -webkit-font-smoothing: antialiased;
 }
+img{
+  width: 100%;
+}
 .h1,
 .h2,
 .h3,
@@ -3263,3 +3266,4 @@ fieldset[disabled] .btn-gplus.active {
     padding: 15px;
   }
 }
+
