@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>alshin - 【译】Rails 集成第三方 API</title>
+    <meta name="description" content="">
+
+    <link rel="stylesheet" href="/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="/assets/css/animate.css">
+    <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/css/font.css">
+    <link rel="stylesheet" href="/assets/css/landing.css">
+    <link rel="stylesheet" href="/assets/css/app.css">
+    <link rel="stylesheet" href="/assets/css/highlight.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+
+    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_1262884701'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1262884701' type='text/javascript'%3E%3C/script%3E"));</script>
+</head>
+
+    <body>
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>【译】Rails 集成第三方 API</h1>
+                    <h2 class="headline">23 Oct 2017</h2>
+                </header>
+                <!--                                                                                                                                                                                -->
+                <section id="post-body">
+                    <blockquote>
+  <p>在搭建自己网站的时候，总会遇到集成第三方应用的时候，例如你不想自己收集数据，或者是要用到别人的服务。这文章将向您展示一个快速和简单的例子,如何使用API来填充应用程序用一些有用的数据。</p>
+</blockquote>
+
+<h2 id="构建-api-基础">构建 API 基础</h2>
+
+<p>我非常喜欢做菜，所以决定通过做一个菜谱 app。我将使用通过 Mashape 提供的 Spoonacular API。这是 API 文档 <a href="https://market.mashape.com/spoonacular/recipe-food-nutrition">链接</a>, 构建 API 之前，我们需要申请一个 mashape 帐号，通过帐号生成 API token。</p>
+
+<p>我们先创建一个 Rails 项目，添加我们接下来需要到的 GEM，<a href="https://github.com/bkeepers/dotenv">dotenv-rails</a>,能让我保存一些重要数据保存成环境变量，<a href="https://github.com/lostisland/faraday">faraday</a>, 简单,灵活的 HTTP 客户端。</p>
+
+<pre><code class="language-Ruby"> gem 'dotenv-rails'
+ gem 'faraday'
+</code></pre>
+
+<p>新建两个类 Connection，Request，在 lib/spoonacular 文件夹下，这两个类是与第三方 API 建立连接，和请求用的。</p>
+
+<pre><code class="language-Ruby">require 'faraday'
+require 'json'
+
+class Connection
+  BASE = 'https://spoonacular-recipe-food-nutrition-v1.p.mashape.com'
+
+  def self.api
+    Faraday.new(url: BASE) do |faraday|
+      faraday.response :logger
+      faraday.adapter Faraday.default_adapter
+      faraday.headers['Content-Type'] = 'application/json'
+      faraday.headers['X-Mashape-Key'] = ENV['MASHAPE_KEY']
+    end
+  end
+end
+</code></pre>
+
+<p>在 Connection 类里，定义了连接 API 的方法，和一些必须的配置文件。</p>
+
+<pre><code class="language-Ruby">class Request
+  class &lt;&lt; self
+    def where(resource_path, query = {}, options = {})
+      response, status = get_json(resource_path, query)
+      status == 200 ? response : errors(response)
+    end
+
+    def get(id)
+      response, status = get_json(id)
+      status == 200 ? response : errors(response)
+    end
+
+    def errors(response)
+      error = { errors: { status: response["status"], message: response["message"] } }
+      response.merge(error)
+    end
+
+    def get_json(root_path, query = {})
+      query_string = query.map{|k,v| "#{k}=#{v}"}.join("&amp;")
+      path = query.empty?? root_path : "#{root_path}?#{query_string}"
+      response = api.get(path)
+      [JSON.parse(response.body), response.status]
+    end
+
+    def api
+      Connection.api
+    end
+  end
+end
+</code></pre>
+
+<p>Request 类负责 Spoonacular API 的实际请求，还定义了一些辅佐方法。</p>
+
+<h2 id="数据处理">数据处理</h2>
+
+<p>现在我们需要向 Spoonacular API 发出请求, 通过它的文档，我们需要设计自己数据结构。这个 APP 只是想简单罗列出食谱，食谱有很多成分，和说明。
+对于初学者，我们先创建一个 Spoonacular::Base 类，其中定义了错误属性和 initializaton method, 我建议把所有类放在 app/services/spoonacular 下。</p>
+
+<pre><code class="language-Ruby">module Spoonacular
+  class Base
+    attr_accessor :errors
+
+    def initialize(args = {})
+      args.each do |name, value|
+        attr_name = name.to_s.underscore
+        send("#{attr_name}=", value) if respond_to?("#{attr_name}=")
+      end
+    end
+  end
+end
+</code></pre>
+<p>我们继续完善 Spoonacular API， 我们需要定义两条 routes, 一条是菜谱列表，另一个是菜谱详细信息。</p>
+
+<pre><code class="language-Ruby">GET recipes/random
+GET recipes/:id/information
+</code></pre>
+
+<p>正如你期望的，我们再创建 Spoonacular::Recipe 类，让它继承 Spoonacular::Base, 这个类有随机查找菜谱的的方法，我们还需要重新定义初始方法，以解析 HTTP 响应中的结构。</p>
+
+<pre><code class="language-Ruby">module Spoonacular
+  class Recipe &lt; Base
+    attr_accessor :aggregate_likes,
+                  :dairy_free,
+                  :gluten_free,
+                  :id,
+                  :image,
+                  :ingredients,
+                  :instructions,
+                  :ready_in_minutes,
+                  :title,
+                  :vegan,
+                  :vegetarian
+
+    MAX_LIMIT = 12
+
+    def self.random(query = {})
+      response = Request.where('recipes/random', query.merge({ number: MAX_LIMIT }))
+      recipes = response.fetch('recipes', []).map { |recipe| Recipe.new(recipe) }
+      [ recipes, response[:errors] ]
+    end
+
+    def self.find(id)
+      response = Request.get("recipes/#{id}/information")
+      Recipe.new(response)
+    end
+
+    def initialize(args = {})
+      super(args)
+      self.ingredients = parse_ingredients(args)
+      self.instructions = parse_instructions(args)
+    end
+
+    def parse_ingredients(args = {})
+      args.fetch("extendedIngredients", []).map { |ingredient| Ingredient.new(ingredient) }
+    end
+
+    def parse_instructions(args = {})
+      instructions = args["analyzedInstructions"]
+      if instructions
+        steps = instructions.first.fetch("steps", [])
+        steps.map { |instruction| Instruction.new(instruction) }
+      end
+    end
+  end
+end
+</code></pre>
+
+<p>返回来响应体中，包含了每个菜谱配方，都会创建一个 Spoonacular::Recipe 对象， 和几个 Spoonacular::Lngredient, Spoonacular::Instruction 对象。</p>
+
+<pre><code class="language-Ruby">module Spoonacular
+  class Ingredient &lt; Base
+    attr_accessor :id,
+                  :image,
+                  :name,
+                  :amount,
+                  :unit,
+                  :original_string
+  end
+end
+</code></pre>
+
+<pre><code class="language-Ruby">module Spoonacular
+  class Instruction &lt; Base
+    attr_accessor :number, :step
+  end
+end
+</code></pre>
+
+<h2 id="最终构建应用">最终构建应用</h2>
+
+<p>我们搭建 WEB 界面。 如前所述，此界面将具有菜谱配方列表和菜谱配方详细信息。 因此，应该不难猜到我们需要为RecipesController 创建 index 和 show 页面：</p>
+
+<pre><code class="language-Ruby">class RecipesController &lt; ApplicationController
+
+  def index
+    @tag = query.fetch(:tags, 'all')
+    @recipes, @errors = Spoonacular::Recipe.random(query)
+  end
+
+  def show
+    @recipe = Spoonacular::Recipe.find(params[:id])
+  end
+
+  private
+  def query
+    params.fetch(:query, {})
+  end
+end
+</code></pre>
+
+<h3 id="原文">原文</h3>
+
+<ul>
+  <li><a href="https://revs.runtime-revolution.com/integrating-a-third-party-api-with-rails-5-134f960ddbba">https://revs.runtime-revolution.com/integrating-a-third-party-api-with-rails-5-134f960ddbba</a></li>
+</ul>
+
+
+                </section>
+            </article>
+
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+                var disqus_shortname = 'alshin';
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+            <footer id="footer">
+                <div id="social">
+                    <a class="symbol" href="https://github.com/yundshang">
+                      <i class="fa fa-github"></i>
+                    </a>
+                    <a class="symbol" href="https://twitter.com">
+                      <i class="fa fa-twitter"></i>
+                    </a>
+                    <a class="symbol" href="http://weibo.com">
+                      <i class="fa fa-weibo"></i>
+                    </a>
+                </div>
+                <p class="small">
+                    © 版权所有 alshin
+                </p>
+            </footer>
+        </section>
+
+    </body>
+</html>
