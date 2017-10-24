@@ -15,14 +15,14 @@ tag: 翻译
 
 我们先创建一个 Rails 项目，添加我们接下来需要到的 GEM，[dotenv-rails](https://github.com/bkeepers/dotenv),能让我保存一些重要数据保存成环境变量，[faraday](https://github.com/lostisland/faraday), 简单,灵活的 HTTP 客户端。
 
-```Ruby
+```ruby
  gem 'dotenv-rails'
  gem 'faraday'
 ```
 
 新建两个类 Connection，Request，在 lib/spoonacular 文件夹下，这两个类是与第三方 API 建立连接，和请求用的。
 
-```Ruby
+```ruby
 require 'faraday'
 require 'json'
 
@@ -42,7 +42,7 @@ end
 
 在 Connection 类里，定义了连接 API 的方法，和一些必须的配置文件。
 
-```Ruby
+```ruby
 class Request
   class << self
     def where(resource_path, query = {}, options = {})
@@ -81,7 +81,7 @@ Request 类负责 Spoonacular API 的实际请求，还定义了一些辅佐方�
 现在我们需要向 Spoonacular API 发出请求, 通过它的文档，我们需要设计自己数据结构。这个 APP 只是想简单罗列出食谱，食谱有很多成分，和说明。
 对于初学者，我们先创建一个 Spoonacular::Base 类，其中定义了错误属性和 initializaton method, 我建议把所有类放在 app/services/spoonacular 下。
 
-```Ruby
+```ruby
 module Spoonacular
   class Base
     attr_accessor :errors
@@ -97,14 +97,14 @@ end
 ```
 我们继续完善 Spoonacular API， 我们需要定义两条 routes, 一条是菜谱列表，另一个是菜谱详细信息。
 
-```Ruby
+```ruby
 GET recipes/random
 GET recipes/:id/information
 ```
 
 正如你期望的，我们再创建 Spoonacular::Recipe 类，让它继承 Spoonacular::Base, 这个类有随机查找菜谱的的方法，我们还需要重新定义初始方法，以解析 HTTP 响应中的结构。
 
-```Ruby
+```ruby
 module Spoonacular
   class Recipe < Base
     attr_accessor :aggregate_likes,
@@ -155,7 +155,7 @@ end
 
 返回来响应体中，包含了每个菜谱配方，都会创建一个 Spoonacular::Recipe 对象， 和几个 Spoonacular::Lngredient, Spoonacular::Instruction 对象。
 
-```Ruby
+```ruby
 module Spoonacular
   class Ingredient < Base
     attr_accessor :id,
@@ -168,7 +168,7 @@ module Spoonacular
 end
 ```
 
-```Ruby
+```ruby
 module Spoonacular
   class Instruction < Base
     attr_accessor :number, :step
@@ -180,7 +180,7 @@ end
 
 我们搭建 WEB 界面。 如前所述，此界面将具有菜谱配方列表和菜谱配方详细信息。 因此，应该不难猜到我们需要为RecipesController 创建 index 和 show 页面：
 
-```Ruby
+```ruby
 class RecipesController < ApplicationController
 
   def index
