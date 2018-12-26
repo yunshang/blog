@@ -1,5 +1,9 @@
 title: "alshin"
-gems: [jekyll-paginate]
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+plugins: [jekyll-paginate]
 markdown: kramdown
 highlighter: pygments
 github_username: yunshang
