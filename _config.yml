@@ -3,7 +3,7 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - vendor
-plugins: [jekyll-paginate]
+plugins_dir: [jekyll-paginate]
 markdown: kramdown
 highlighter: pygments
 github_username: yunshang
